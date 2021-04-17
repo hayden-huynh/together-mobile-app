@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:together_app/model/answer.dart';
+import 'package:together_app/models/answer.dart';
 
 class QuestionnaireEntry {
   final String questionText;

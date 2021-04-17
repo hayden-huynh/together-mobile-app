@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:together_app/widgets/question_section.dart';
 import 'package:together_app/widgets/answers_section.dart';
-import 'package:together_app/model/questionnaire_entry_provider.dart';
+import 'package:together_app/models/questionnaire_entry_provider.dart';
 
 class QuestionnaireEntryWidget extends StatefulWidget {
   final List<QuestionnaireEntry> entries;

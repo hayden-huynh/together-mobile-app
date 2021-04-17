@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:together_app/screens/questionnaire_entry_screen.dart';
-import 'package:together_app/model/questionnaire_entry_provider.dart';
+import 'package:together_app/models/questionnaire_entry_provider.dart';
 
 void main() {
   runApp(MyApp());
