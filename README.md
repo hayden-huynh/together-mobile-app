@@ -1,16 +1,13 @@
-# together_app
+# Together Mobile Application
 
-A new Flutter project.
+A mobile application developed with the Flutter framework as part of my thesis project at The University of Queensland, Australia.
 
-## Getting Started
+## About Together
 
-This project is a starting point for a Flutter application.
+The purpose of Together is to help people cope with loneliness by:
+  - Sending mental-health-analyzing questionnaires and collecting submissions in frequent intervals
+  - Logging GPS data along with according timestamps (User's permission is required)
+  
+More analytical work can be done to the collected data given the amount of time I have to work on the project.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## More documentation coming soon...
