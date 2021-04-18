@@ -41,19 +41,53 @@ class _QuestionnaireEntryWidgetState extends State<QuestionnaireEntryWidget> {
               : MainAxisAlignment.spaceBetween,
           children: [
             if (_currentEntryIndex != 0)
-              IconButton(
-                color: Theme.of(context).accentColor,
-                icon: Icon(Icons.arrow_back_ios_outlined),
-                onPressed: goToPreviousEntry,
+              GestureDetector(
+                onTap: goToPreviousEntry,
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_back_ios_outlined,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      Text(
+                        'Previous',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             if (_currentEntryIndex != widget.entries.length - 1)
-              IconButton(
-                color: Theme.of(context).accentColor,
-                icon: Icon(Icons.arrow_forward_ios_outlined),
-                onPressed: goToNextEntry,
+              GestureDetector(
+                onTap: goToNextEntry,
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Next',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ],
+                  ),
+                ),
               ),
           ],
-        )
+        ),
       ],
     );
   }
