@@ -4,14 +4,18 @@ import 'package:provider/provider.dart';
 import 'package:together_app/models/answer.dart';
 
 class AnswerButton extends StatelessWidget {
-  final List<Answer> answersGroup;
+  // final List<Answer> answersGroup;
+  // final Answer answer;
+  
   final int answerIndex;
+  final Answer answer;
+  final Function selectAnswer;
 
-  AnswerButton(this.answersGroup, this.answerIndex);
+  AnswerButton(this.answer, this.selectAnswer, this.answerIndex);
 
   @override
   Widget build(BuildContext context) {
-    final answer = Provider.of<Answer>(context);
+    // final answer = Provider.of<Answer>(context);
 
     return Align(
       // Align wrapping around ElevatedButton will make the button return to its default width
@@ -32,7 +36,7 @@ class AnswerButton extends StatelessWidget {
             ),
             child: Text('${answer.answerText}'),
             onPressed: () {
-              answer.selectAnswer(answersGroup, answerIndex);
+              selectAnswer(answerIndex);
             },
           ),
         ),
