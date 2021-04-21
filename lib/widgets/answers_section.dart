@@ -1,26 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import 'package:together_app/models/answer_group.dart';
 import 'package:together_app/widgets/answer_button.dart';
+import 'package:together_app/models/answer.dart';
 
-class AnswersSection extends StatelessWidget {
-  // final List<Answer> answers;
+class AnswersSection extends StatefulWidget {
+  final List<Answer> answers;
 
-  // AnswersSection(this.answers);
+  AnswersSection(this.answers);
+
+  @override
+  _AnswersSectionState createState() => _AnswersSectionState();
+}
+
+class _AnswersSectionState extends State<AnswersSection> {
+  void selectAnswer(int index) {
+    setState(() {
+      widget.answers[index].isSelected = true;
+      for (int i = 0; i < widget.answers.length; i++) {
+        if (i != index) {
+          widget.answers[i].isSelected = false;
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final answers = Provider.of<AnswerGroup>(context);
-
     return Expanded(
       child: ListView.builder(
         itemBuilder: (ctx, i) => AnswerButton(
-          answers.answerGroup[i],
-          answers.selectAnswer,
+          widget.answers[i],
+          selectAnswer,
           i,
         ),
-        itemCount: answers.answerGroup.length,
+        itemCount: widget.answers.length,
       ),
     );
   }

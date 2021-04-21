@@ -21,50 +21,22 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
           : MainAxisAlignment.spaceBetween,
       children: [
         if (currentEntryIndex != 0)
-          InkWell(
-            onTap: goToPreviousEntry,
-            child: Container(
-              margin: EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.arrow_back_ios_outlined,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  Text(
-                    'Previous',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                ],
-              ),
+          TextButton.icon(
+            onPressed: goToPreviousEntry,
+            icon: const Icon(Icons.arrow_back_ios_outlined),
+            label: const Text(
+              'Previous',
+              style: TextStyle(fontSize: 18),
             ),
           ),
         if (currentEntryIndex != entryNum - 1)
-          InkWell(
-            onTap: goToNextEntry,
-            child: Container(
-              margin: EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  Text(
-                    'Next',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    color: Theme.of(context).accentColor,
-                  ),
-                ],
-              ),
+          TextButton.icon(
+            onPressed: goToNextEntry,
+            icon: const Text(
+              'Next',
+              style: TextStyle(fontSize: 18),
             ),
+            label: const Icon(Icons.arrow_forward_ios_outlined),
           ),
       ],
     );

@@ -20,10 +20,21 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Together',
         theme: ThemeData(
-          appBarTheme: AppBarTheme(color: Colors.green[700]),
+          appBarTheme: AppBarTheme(
+            color: Colors.green,
+            centerTitle: true,
+          ),
           canvasColor: Colors.green[50],
-          primarySwatch: Colors.green,
+          primaryColor: Colors.green[400],
           accentColor: Colors.blue,
+          textTheme: TextTheme(
+            headline6: TextStyle(
+              fontSize: 30,
+            ),
+            headline5: TextStyle(
+              fontSize: 25,
+            ),
+          ),
         ),
         home: QuestionnaireEntryScreen(),
         routes: {

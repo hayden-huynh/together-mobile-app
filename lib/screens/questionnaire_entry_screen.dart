@@ -13,9 +13,13 @@ class QuestionnaireEntryScreen extends StatelessWidget {
         Provider.of<QuestionnaireEntryProvider>(context, listen: false).entries;
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Together'),
+      appBar: AppBar(
+        title: Text(
+          'Together',
+          style: Theme.of(context).textTheme.headline6,
         ),
-        body: QuestionnaireEntryWidget(entries));
+      ),
+      body: QuestionnaireEntryWidget(entries),
+    );
   }
 }

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'package:together_app/widgets/question_section.dart';
 import 'package:together_app/widgets/answers_section.dart';
 import 'package:together_app/models/questionnaire_entry_provider.dart';
 import 'package:together_app/widgets/questionnaire_entry_navigator.dart';
-import 'package:together_app/models/answer.dart';
 
 class QuestionnaireEntryWidget extends StatefulWidget {
   final List<QuestionnaireEntry> entries;
@@ -37,10 +35,7 @@ class _QuestionnaireEntryWidgetState extends State<QuestionnaireEntryWidget> {
     return Column(
       children: [
         QuestionSection(widget.entries[_currentEntryIndex].questionText),
-        ChangeNotifierProvider.value(
-          value: widget.entries[_currentEntryIndex].answers,
-          child: AnswersSection(),
-        ),
+        AnswersSection(widget.entries[_currentEntryIndex].answers),
         QuestionnaireEntryNavigator(
           _currentEntryIndex,
           goToPreviousEntry,

@@ -11,13 +11,10 @@ class QuestionSection extends StatelessWidget {
       width: double.infinity,
       child: Text(
         questionText,
-        style: TextStyle(
-          fontSize: 25,
-          fontWeight: FontWeight.bold,
-        ),
+        style: Theme.of(context).textTheme.headline5,
       ),
       alignment: Alignment.center,
-      padding: EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
     );
   }
 }
