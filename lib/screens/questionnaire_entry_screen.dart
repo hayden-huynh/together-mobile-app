@@ -19,7 +19,9 @@ class QuestionnaireEntryScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.headline6,
         ),
       ),
-      body: QuestionnaireEntryWidget(entries),
+      body: SafeArea(
+        child: QuestionnaireEntryWidget(entries),
+      ),
     );
   }
 }

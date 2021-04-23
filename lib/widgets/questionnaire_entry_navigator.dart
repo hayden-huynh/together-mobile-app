@@ -26,7 +26,7 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios_outlined),
             label: const Text(
               'Previous',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 23),
             ),
           ),
         if (currentEntryIndex != entryNum - 1)
@@ -34,7 +34,7 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
             onPressed: goToNextEntry,
             icon: const Text(
               'Next',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 23),
             ),
             label: const Icon(Icons.arrow_forward_ios_outlined),
           ),
