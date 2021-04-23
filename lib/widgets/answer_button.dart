@@ -34,9 +34,12 @@ class AnswerButton extends StatelessWidget {
               ),
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
+                alignment: Alignment.center,
                 child: Text(
                   '${answer.answerText}',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 20, ),
+                  softWrap: true,
+                  textAlign: TextAlign.center,
                 ),
               ),
               onPressed: () {

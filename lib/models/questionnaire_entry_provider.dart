@@ -2,12 +2,19 @@ import 'package:flutter/foundation.dart';
 
 import 'package:together_app/models/answer.dart';
 
+enum QuestionType {
+  MultipleChoice,
+  OpenEnded,
+}
+
 class QuestionnaireEntry {
   final String questionText;
+  final QuestionType type;
   final List<Answer> answers;
 
   QuestionnaireEntry(
     this.questionText,
+    this.type,
     this.answers,
   );
 }
@@ -15,50 +22,66 @@ class QuestionnaireEntry {
 class QuestionnaireEntryProvider with ChangeNotifier {
   List<QuestionnaireEntry> _entries = [
     QuestionnaireEntry(
-      'Question 1',
+      'I feel good right now?',
+      QuestionType.MultipleChoice,
       [
-        Answer(answerText: 'A'),
-        Answer(answerText: 'B'),
-        Answer(answerText: 'C'),
-        Answer(answerText: 'D'),
+        Answer(answerText: 'Strong Disagree'),
+        Answer(answerText: 'Disagree'),
+        Answer(answerText: 'Neither Agree nor Disagree'),
+        Answer(answerText: 'Agree'),
+        Answer(answerText: 'Strongly Agree'),
       ],
     ),
     QuestionnaireEntry(
-      'Question 2',
+      'How connected do you feel to other people in general right now?',
+      QuestionType.MultipleChoice,
       [
-        Answer(answerText: 'D'),
-        Answer(answerText: 'E'),
-        Answer(answerText: 'F'),
-        Answer(answerText: 'G'),
+        Answer(answerText: 'Not At All Connected'),
+        Answer(answerText: 'A Little Connected'),
+        Answer(answerText: 'Connected'),
+        Answer(answerText: 'Very Connected'),
+        Answer(answerText: 'Prefer Not To Say'),
       ],
     ),
     QuestionnaireEntry(
-      'Question 3',
+      'Do you feel lonely right now?',
+      QuestionType.MultipleChoice,
       [
-        Answer(answerText: 'H'),
-        Answer(answerText: 'I'),
-        Answer(answerText: 'J'),
-        Answer(answerText: 'K'),
+        Answer(answerText: 'Very lonely'),
+        Answer(answerText: 'Lonely'),
+        Answer(answerText: 'A Little Lonely'),
+        Answer(answerText: 'Not At All Lonely'),
+        Answer(answerText: 'Prefer Not To Say'),
       ],
     ),
     QuestionnaireEntry(
-      'Question 4',
+      'How would you rate your learning capacity right now?',
+      QuestionType.MultipleChoice,
       [
-        Answer(answerText: 'L'),
-        Answer(answerText: 'M'),
-        Answer(answerText: 'N'),
-        Answer(answerText: 'O'),
+        Answer(answerText: 'Poor'),
+        Answer(answerText: 'Not Great'),
+        Answer(answerText: 'OK'),
+        Answer(answerText: 'Really Good'),
+        Answer(answerText: 'Prefer Not To Say'),
       ],
     ),
     QuestionnaireEntry(
-      'Question 5',
+      'Assuming there are some people nearby, how connected do you feel to those people right now?',
+      QuestionType.MultipleChoice,
       [
-        Answer(answerText: 'P'),
-        Answer(answerText: 'Q'),
-        Answer(answerText: 'R'),
-        Answer(answerText: 'S'),
+        Answer(answerText: 'Not At All Connected'),
+        Answer(answerText: 'A Little Connected'),
+        Answer(answerText: 'Connected'),
+        Answer(answerText: 'Very Connected'),
+        Answer(answerText: 'Prefer Not To Say'),
+        Answer(answerText: 'N/A'),
       ],
     ),
+    QuestionnaireEntry(
+      'Right now, how many people are currently within a 5m radius of you?',
+      QuestionType.OpenEnded,
+      null,
+    )
   ];
 
   List<QuestionnaireEntry> get entries {

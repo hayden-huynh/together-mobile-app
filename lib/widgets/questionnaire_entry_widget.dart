@@ -34,8 +34,12 @@ class _QuestionnaireEntryWidgetState extends State<QuestionnaireEntryWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        QuestionSection(widget.entries[_currentEntryIndex].questionText),
-        AnswersSection(widget.entries[_currentEntryIndex].answers),
+        QuestionSection(widget.entries[_currentEntryIndex].questionText,
+            _currentEntryIndex),
+        AnswersSection(
+          widget.entries[_currentEntryIndex].answers,
+          widget.entries[_currentEntryIndex].type,
+        ),
         QuestionnaireEntryNavigator(
           _currentEntryIndex,
           goToPreviousEntry,

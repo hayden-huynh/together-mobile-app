@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
               fontSize: 30,
             ),
             headline5: TextStyle(
-              fontSize: 25,
+              fontSize: 23,
             ),
           ),
         ),
