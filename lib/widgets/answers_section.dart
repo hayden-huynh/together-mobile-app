@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:together_app/widgets/answer_button.dart';
-import 'package:together_app/models/answer.dart';
 import 'package:together_app/models/questionnaire_entry_provider.dart'
     show QuestionType;
+import 'package:together_app/widgets/answer_multiple_choices.dart';
+import 'package:together_app/widgets/answer_open_ended.dart';
 
 class AnswersSection extends StatefulWidget {
-  final List<Answer> answers;
+  final dynamic answers;
   final QuestionType type;
 
   AnswersSection(
@@ -19,58 +19,43 @@ class AnswersSection extends StatefulWidget {
 }
 
 class _AnswersSectionState extends State<AnswersSection> {
-  void selectAnswer(int index) {
-    setState(
-      () {
-        widget.answers[index].isSelected = true;
-        for (int i = 0; i < widget.answers.length; i++) {
-          if (i != index) {
-            widget.answers[i].isSelected = false;
-          }
+  void _selectAnswer(int index) {
+    setState(() {
+      widget.answers[index].isSelected = true;
+      for (int i = 0; i < widget.answers.length; i++) {
+        if (i != index) {
+          widget.answers[i].isSelected = false;
         }
-      },
-    );
+      }
+    });
   }
 
-  Widget getAnswerType(QuestionType type) {
-    switch (widget.type) {
-      case QuestionType.MultipleChoice:
-        return ListView.builder(
-          itemBuilder: (ctx, i) => AnswerButton(
-            widget.answers[i],
-            selectAnswer,
-            i,
-          ),
-          itemCount: widget.answers.length,
-        );
-      case QuestionType.OpenEnded:
-        return LayoutBuilder(
-          builder: (ctx, constraints) => Container(
-            width: constraints.maxWidth * 0.8,
-            child: TextField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding: EdgeInsets.all(20),
-                border: OutlineInputBorder(),
-              ),
-              style: TextStyle(
-                fontSize: 30,
-                height: 3,
-              ),
-            ),
-          ),
-        );
-      default:
-        return Center(
-          child: Text('No answer available?'),
-        );
+  void _inputAnswer(String answerText) {
+    if (answerText == null) {
+      return;
     }
+    widget.answers.answerText = answerText;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: getAnswerType(widget.type));
+    return Expanded(
+      child: () {
+        switch (widget.type) {
+          case QuestionType.MultipleChoice:
+            return AnswerMultipleChoices(
+              widget.answers,
+              _selectAnswer,
+              widget.answers.length,
+            );
+          case QuestionType.OpenEnded:
+            return AnswerOpenEnded(_inputAnswer);
+          default:
+            return Center(
+              child: Text('No answer available?'),
+            );
+        }
+      }(),
+    );
   }
 }

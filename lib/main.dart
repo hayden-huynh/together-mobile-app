@@ -29,10 +29,12 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.blue,
           textTheme: TextTheme(
             headline6: TextStyle(
-              fontSize: 30,
+              fontSize: 32,
+              fontFamily: 'Pacifico',
+              color: Colors.white,
             ),
             headline5: TextStyle(
-              fontSize: 23,
+              fontSize: 27,
             ),
           ),
         ),

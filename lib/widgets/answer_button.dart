@@ -37,7 +37,9 @@ class AnswerButton extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   '${answer.answerText}',
-                  style: TextStyle(fontSize: 20, ),
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
                   softWrap: true,
                   textAlign: TextAlign.center,
                 ),

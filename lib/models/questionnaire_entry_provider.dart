@@ -10,7 +10,7 @@ enum QuestionType {
 class QuestionnaireEntry {
   final String questionText;
   final QuestionType type;
-  final List<Answer> answers;
+  final dynamic answers;
 
   QuestionnaireEntry(
     this.questionText,
@@ -80,7 +80,7 @@ class QuestionnaireEntryProvider with ChangeNotifier {
     QuestionnaireEntry(
       'Right now, how many people are currently within a 5m radius of you?',
       QuestionType.OpenEnded,
-      null,
+      Answer(),
     )
   ];
 

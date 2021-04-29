@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
-
 class Answer{
-  final String answerText;
+  String answerText;
   bool isSelected;
 
   Answer({
