@@ -46,10 +46,12 @@ class _AnswersSectionState extends State<AnswersSection> {
             return AnswerMultipleChoices(
               widget.answers,
               _selectAnswer,
-              widget.answers.length,
             );
           case QuestionType.OpenEnded:
-            return AnswerOpenEnded(_inputAnswer);
+            return AnswerOpenEnded(
+              _inputAnswer,
+              widget.answers,
+            );
           default:
             return Center(
               child: Text('No answer available?'),

@@ -1,28 +1,98 @@
 import 'package:flutter/material.dart';
 
-import 'package:together_app/widgets/answer_button.dart';
 import 'package:together_app/models/answer.dart';
 
-class AnswerMultipleChoices extends StatelessWidget {
+class AnswerMultipleChoices extends StatefulWidget {
   final List<Answer> answers;
   final Function selectAnswer;
-  final int answerCount;
 
   AnswerMultipleChoices(
     this.answers,
     this.selectAnswer,
-    this.answerCount,
   );
 
   @override
+  _AnswerMultipleChoicesState createState() => _AnswerMultipleChoicesState();
+}
+
+class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (ctx, i) => AnswerButton(
-        answers[i],
-        selectAnswer,
-        i,
+    
+    int index = widget.answers.indexWhere((ans) => ans.isSelected);
+    double _currentSliderValue = index == -1 ? 0 : index * 1.0;
+    // return ListView.builder(
+    //   itemBuilder: (ctx, i) => AnswerButton(
+    //     answers[i],
+    //     selectAnswer,
+    //     i,
+    //   ),
+    //   itemCount: answers.length,
+    // );
+    return LayoutBuilder(
+      builder: (ctx, constraints) => Column(
+        children: [
+          SizedBox(
+            height: constraints.maxHeight * 0.05,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(
+              widget.answers.length,
+              (idx) => Text(
+                '${idx + 1} - ${widget.answers[idx].answerText}',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: constraints.maxHeight * 0.1,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(
+                widget.answers.length,
+                (index) => Text(
+                  '${index + 1}',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SliderTheme(
+            data: SliderThemeData(
+              thumbColor: Theme.of(context).primaryColor,
+              activeTrackColor:
+                  Theme.of(context).primaryColor.withOpacity(0.24),
+              inactiveTrackColor:
+                  Theme.of(context).primaryColor.withOpacity(0.24),
+              activeTickMarkColor: Theme.of(context).primaryColor,
+              inactiveTickMarkColor: Theme.of(context).primaryColor,
+            ),
+            child: Slider.adaptive(
+              value: _currentSliderValue,
+              min: 0,
+              max: widget.answers.length.toDouble() - 1,
+              divisions: widget.answers.length - 1,
+              onChanged: (newValue) {
+                setState(() {
+                  _currentSliderValue = newValue;
+                  widget.selectAnswer(newValue.toInt());
+                });
+              },
+            ),
+          )
+        ],
       ),
-      itemCount: answers.length,
     );
   }
 }
