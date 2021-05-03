@@ -33,6 +33,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   provider: ^5.0.0
+  geolocator: ^7.0.3
+  location: ^4.1.1
+  flutter_config: ^2.0.0
+  http: ^0.13.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -3,8 +3,13 @@ import 'package:provider/provider.dart';
 
 import 'package:together_app/screens/questionnaire_entry_screen.dart';
 import 'package:together_app/models/questionnaire_entry_provider.dart';
+import 'package:together_app/screens/introduction_screen.dart';
+import 'package:together_app/models/location_provider.dart';
+import 'package:flutter_config/flutter_config.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
   runApp(MyApp());
 }
 
@@ -15,6 +20,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (ctx) => QuestionnaireEntryProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => LocationProvider(),
         ),
       ],
       child: MaterialApp(
@@ -28,18 +36,14 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.green[400],
           accentColor: Colors.blue,
           textTheme: TextTheme(
-            headline6: TextStyle(
-              fontSize: 32,
-              fontFamily: 'Pacifico',
-              color: Colors.white,
-            ),
             headline5: TextStyle(
               fontSize: 27,
             ),
           ),
         ),
-        home: QuestionnaireEntryScreen(),
+        home: IntroductionScreen(),
         routes: {
+          IntroductionScreen.routeName: (ctx) => IntroductionScreen(),
           QuestionnaireEntryScreen.routeName: (ctx) =>
               QuestionnaireEntryScreen(),
         },

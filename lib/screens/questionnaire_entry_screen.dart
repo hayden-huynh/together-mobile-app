@@ -15,8 +15,11 @@ class QuestionnaireEntryScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Together',
-          style: Theme.of(context).textTheme.headline6,
+          'Questionnaire',
+          style: TextStyle(
+            fontSize: 32,
+            color: Colors.white,
+          ),
         ),
       ),
       body: SafeArea(

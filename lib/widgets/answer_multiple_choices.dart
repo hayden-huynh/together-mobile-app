@@ -16,25 +16,16 @@ class AnswerMultipleChoices extends StatefulWidget {
 }
 
 class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
-
   @override
   Widget build(BuildContext context) {
-    
     int index = widget.answers.indexWhere((ans) => ans.isSelected);
     double _currentSliderValue = index == -1 ? 0 : index * 1.0;
-    // return ListView.builder(
-    //   itemBuilder: (ctx, i) => AnswerButton(
-    //     answers[i],
-    //     selectAnswer,
-    //     i,
-    //   ),
-    //   itemCount: answers.length,
-    // );
-    return LayoutBuilder(
-      builder: (ctx, constraints) => Column(
+    
+    return SingleChildScrollView(
+      child: Column(
         children: [
           SizedBox(
-            height: constraints.maxHeight * 0.05,
+            height: 30,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +41,7 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
             ),
           ),
           SizedBox(
-            height: constraints.maxHeight * 0.1,
+            height: 40,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
