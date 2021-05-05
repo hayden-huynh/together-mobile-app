@@ -50,23 +50,23 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                 softWrap: true,
               ),
             ),
-            Container(
-              margin: const EdgeInsets.all(20),
-              child: Consumer<LocationProvider>(
-                builder: (_, locationProvider, __) =>
-                    locationProvider.location == null
-                        ? Text(
-                            'Nothing',
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                          )
-                        : Text(
-                            'Addr: ${locationProvider.locationAddress} - Name: ${locationProvider.locationName}',
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                          ),
-              ),
-            ),
+            // Container(
+            //   margin: const EdgeInsets.all(20),
+            //   child: Consumer<LocationProvider>(
+            //     builder: (_, locationProvider, __) =>
+            //         locationProvider.location == null
+            //             ? Text(
+            //                 'Nothing',
+            //                 textAlign: TextAlign.center,
+            //                 softWrap: true,
+            //               )
+            //             : Text(
+            //                 'Addr: ${locationProvider.locationAddress} - Name: ${locationProvider.locationName}',
+            //                 textAlign: TextAlign.center,
+            //                 softWrap: true,
+            //               ),
+            //   ),
+            // ),
             Align(
               child: LayoutBuilder(
                 builder: (ctx, constraints) => Container(

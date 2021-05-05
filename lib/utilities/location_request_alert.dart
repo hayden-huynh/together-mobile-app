@@ -36,7 +36,7 @@ Future<void> showLocationAlert(BuildContext context) async {
             WidgetSpan(child: Icon(Icons.location_on_outlined)),
             TextSpan(
               text:
-                  'service on and allow the app to ALWAYS use your location (even in the background)',
+                  'Service on, allow the app to ALWAYS use your location, and keep the app running in the background.',
             ),
           ],
         ),
