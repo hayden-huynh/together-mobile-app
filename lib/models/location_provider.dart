@@ -33,7 +33,7 @@ class LocationProvider with ChangeNotifier {
     );
     this.locationAddress = locationDetails['formatted_address'];
     this.locationName = locationDetails['name'];
-    print('Address: ${this.locationAddress} - Name: ${this.locationName}\n');
+    // print('Address: ${this.locationAddress} - Name: ${this.locationName}\n');
     notifyListeners();
   }
 

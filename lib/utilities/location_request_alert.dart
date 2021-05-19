@@ -13,7 +13,7 @@ Future<void> showLocationAlert(BuildContext context) async {
   );
 
   if (locationServiceEnabled && permission == LocationPermission.always) {
-    locationProvider.setUpLocationStream();
+    // locationProvider.setUpLocationStream();
   } else {
     AlertDialog locationAlert = AlertDialog(
       title: Text(
@@ -47,7 +47,7 @@ Future<void> showLocationAlert(BuildContext context) async {
             Navigator.of(context).pop();
             await locationProvider.enableLocationServices();
             await locationProvider.askForLocationPermission();
-            locationProvider.setUpLocationStream();
+            // locationProvider.setUpLocationStream();
           },
           child: Text(
             'OK',

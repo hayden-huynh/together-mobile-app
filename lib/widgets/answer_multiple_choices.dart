@@ -21,56 +21,63 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
     int index = widget.answers.indexWhere((ans) => ans.isSelected);
     double _currentSliderValue = index == -1 ? 0 : index * 1.0;
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 30,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 5.0,
+            vertical: 5.0,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
               widget.answers.length,
-              (idx) => Text(
-                '${idx + 1} - ${widget.answers[idx].answerText}',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(
-                widget.answers.length,
-                (index) => Text(
-                  '${index + 1}',
+              (idx) => Container(
+                width: 53,
+                child: Text(
+                  '${widget.answers[idx].answerText}',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
+                  softWrap: true,
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
           ),
-          SliderTheme(
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              colors: [
+                Colors.green.shade400,
+                Colors.red.shade400,
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+          child: SliderTheme(
             data: SliderThemeData(
-              thumbColor: Theme.of(context).primaryColor,
-              activeTrackColor:
-                  Theme.of(context).primaryColor.withOpacity(0.24),
+              thumbColor: Theme.of(context).accentColor,
+              activeTrackColor: Theme.of(context).accentColor.withOpacity(0.24),
               inactiveTrackColor:
-                  Theme.of(context).primaryColor.withOpacity(0.24),
-              activeTickMarkColor: Theme.of(context).primaryColor,
-              inactiveTickMarkColor: Theme.of(context).primaryColor,
+                  Theme.of(context).accentColor.withOpacity(0.24),
+              activeTickMarkColor: Colors.amber,
+              inactiveTickMarkColor: Colors.amber,
+              valueIndicatorColor: Theme.of(context).accentColor,
+              valueIndicatorTextStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
             child: Slider(
               value: _currentSliderValue,
+              label: widget.answers[_currentSliderValue.toInt()].answerText,
               min: 0,
               max: widget.answers.length.toDouble() - 1,
               divisions: widget.answers.length - 1,
@@ -81,9 +88,9 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
                 });
               },
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }
