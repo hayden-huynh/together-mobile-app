@@ -11,7 +11,7 @@ class QuestionnaireEntryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final entries =
         Provider.of<QuestionnaireEntryProvider>(context, listen: false).entries;
-
+    entries.shuffle();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -19,6 +19,7 @@ class QuestionnaireEntryScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 32,
             color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

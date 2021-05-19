@@ -28,12 +28,15 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Together',
-          style: TextStyle(
-            fontSize: 32,
-            fontFamily: 'Pacifico',
-            color: Colors.white,
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Text(
+            'Together',
+            style: TextStyle(
+              fontSize: 32,
+              fontFamily: 'Pacifico',
+              color: Colors.white,
+            ),
           ),
         ),
       ),

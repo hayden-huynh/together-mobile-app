@@ -33,11 +33,12 @@ class LocationProvider with ChangeNotifier {
     );
     this.locationAddress = locationDetails['formatted_address'];
     this.locationName = locationDetails['name'];
+    print('Address: ${this.locationAddress} - Name: ${this.locationName}\n');
     notifyListeners();
   }
 
-  Future<void> setUpLocationStream() async {
-    if (TimeOfDay.now().hour >= 9 && TimeOfDay.now().hour < 20) {
+  void setUpLocationStream() {
+    if (TimeOfDay.now().hour >= 7 && TimeOfDay.now().hour < 20) {
       Timer.periodic(Duration(seconds: 30), (timer) {
         if (TimeOfDay.now().hour >= 20) {
           _locationStream.cancel();

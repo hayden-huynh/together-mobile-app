@@ -22,6 +22,10 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
       children: [
         if (currentEntryIndex != 0)
           TextButton.icon(
+            style: ButtonStyle(
+              overlayColor: MaterialStateColor.resolveWith(
+                  (states) => Colors.transparent),
+            ),
             onPressed: goToPreviousEntry,
             icon: const Icon(Icons.arrow_back_ios_outlined),
             label: const Text(
@@ -31,6 +35,10 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
           ),
         if (currentEntryIndex != entryNum - 1)
           TextButton.icon(
+            style: ButtonStyle(
+              overlayColor: MaterialStateColor.resolveWith(
+                  (states) => Colors.transparent),
+            ),
             onPressed: goToNextEntry,
             icon: const Text(
               'Next',

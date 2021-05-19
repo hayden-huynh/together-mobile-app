@@ -20,7 +20,7 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
   Widget build(BuildContext context) {
     int index = widget.answers.indexWhere((ans) => ans.isSelected);
     double _currentSliderValue = index == -1 ? 0 : index * 1.0;
-    
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -69,7 +69,7 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
               activeTickMarkColor: Theme.of(context).primaryColor,
               inactiveTickMarkColor: Theme.of(context).primaryColor,
             ),
-            child: Slider.adaptive(
+            child: Slider(
               value: _currentSliderValue,
               min: 0,
               max: widget.answers.length.toDouble() - 1,
