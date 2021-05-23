@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:together_app/screens/questionnaire_entry_screen.dart';
-import 'package:together_app/models/location_provider.dart';
 import 'package:together_app/utilities/location_request_alert.dart';
+
+FlutterLocalNotificationsPlugin localNotiPlugin =
+    FlutterLocalNotificationsPlugin();
 
 class IntroductionScreen extends StatefulWidget {
   static const routeName = '/introduction-screen';
@@ -14,6 +17,28 @@ class IntroductionScreen extends StatefulWidget {
 
 class _IntroductionScreenState extends State<IntroductionScreen> {
   bool _locationFunctionAlreadySetUp = false;
+
+  Future<void> _showNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+            'your channel id', 'your channel name', 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker');
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await localNotiPlugin.show(
+        0, 'plain title', 'plain body', platformChannelSpecifics,
+        payload: 'item x');
+    // await localNotiPlugin.periodicallyShow(
+    //   0,
+    //   'Title',
+    //   'Hello world, this is Together',
+    //   RepeatInterval.everyMinute,
+    //   platformChannelSpecifics,
+    //   androidAllowWhileIdle: true,
+    // );
+  }
 
   @override
   void didChangeDependencies() async {
@@ -53,23 +78,6 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                 softWrap: true,
               ),
             ),
-            // Container(
-            //   margin: const EdgeInsets.all(20),
-            //   child: Consumer<LocationProvider>(
-            //     builder: (_, locationProvider, __) =>
-            //         locationProvider.location == null
-            //             ? Text(
-            //                 'Nothing',
-            //                 textAlign: TextAlign.center,
-            //                 softWrap: true,
-            //               )
-            //             : Text(
-            //                 'Addr: ${locationProvider.locationAddress} - Name: ${locationProvider.locationName}',
-            //                 textAlign: TextAlign.center,
-            //                 softWrap: true,
-            //               ),
-            //   ),
-            // ),
             Align(
               child: LayoutBuilder(
                 builder: (ctx, constraints) => Container(
@@ -80,7 +88,8 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                       primary: Theme.of(context).primaryColor,
                       elevation: 5,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      // await _showNotification();
                       Navigator.of(context).pushReplacementNamed(
                           QuestionnaireEntryScreen.routeName);
                     },

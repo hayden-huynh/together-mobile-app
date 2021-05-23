@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 import 'package:together_app/screens/questionnaire_entry_screen.dart';
 import 'package:together_app/models/questionnaire_entry_provider.dart';
@@ -9,9 +14,17 @@ import 'package:together_app/screens/introduction_screen.dart';
 import 'package:together_app/models/location_provider.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+
+Future<void> _setLocalTimeZone() async {
+  tz.initializeTimeZones();
+  final String localZone = await FlutterNativeTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(localZone));
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  _setLocalTimeZone();
   runApp(MyApp());
 }
 
@@ -22,6 +35,48 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Future<FirebaseApp> _init = Firebase.initializeApp();
+  bool flutterLocalNotificationsInitialized = false;
+
+  @override
+  void didChangeDependencies() async {
+    if (!flutterLocalNotificationsInitialized) {
+      FlutterLocalNotificationsPlugin localNotiPlugin =
+          FlutterLocalNotificationsPlugin();
+      const AndroidInitializationSettings androidSettings =
+          AndroidInitializationSettings('mipmap/ic_launcher');
+      final IOSInitializationSettings iOSSettings = IOSInitializationSettings(
+          onDidReceiveLocalNotification:
+              (int id, String title, String body, String payload) async {
+        showDialog(
+          context: context,
+          builder: (_) => CupertinoAlertDialog(
+            title: Text(title),
+            content: Text(body),
+            actions: [
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text('OK'),
+                onPressed: () async {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  await Navigator.of(context)
+                      .pushReplacementNamed(IntroductionScreen.routeName);
+                },
+              )
+            ],
+          ),
+        );
+      });
+      flutterLocalNotificationsInitialized = true;
+      final InitializationSettings initSettings =
+          InitializationSettings(android: androidSettings, iOS: iOSSettings);
+      await localNotiPlugin.initialize(initSettings,
+          onSelectNotification: (_) async {
+        await Navigator.of(context)
+            .pushReplacementNamed(IntroductionScreen.routeName);
+      });
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {

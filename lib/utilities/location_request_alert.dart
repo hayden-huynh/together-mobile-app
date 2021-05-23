@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart' as gl;
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 import 'package:together_app/models/location_provider.dart';
 
 Future<void> showLocationAlert(BuildContext context) async {
-  bool locationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-  LocationPermission permission = await Geolocator.checkPermission();
   final locationProvider = Provider.of<LocationProvider>(
     context,
     listen: false,
   );
 
-  if (locationServiceEnabled && permission == LocationPermission.always) {
-    // locationProvider.setUpLocationStream();
+  if (await Location().serviceEnabled() &&
+      await gl.Geolocator.checkPermission() == gl.LocationPermission.always) {
+    locationProvider.setUpLocationStream();
   } else {
     AlertDialog locationAlert = AlertDialog(
       title: Text(
@@ -47,7 +47,7 @@ Future<void> showLocationAlert(BuildContext context) async {
             Navigator.of(context).pop();
             await locationProvider.enableLocationServices();
             await locationProvider.askForLocationPermission();
-            // locationProvider.setUpLocationStream();
+            locationProvider.setUpLocationStream();
           },
           child: Text(
             'OK',

@@ -1,31 +1,32 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart' show Location;
+import 'package:permission_handler/permission_handler.dart';
+import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart' as gl;
 
 import 'package:together_app/utilities/place_query.dart';
 
 class LocationProvider with ChangeNotifier {
-  Position location;
-  StreamSubscription<Position> _locationStream;
+  LocationData location;
+  StreamSubscription<LocationData> _locationStream;
   String locationAddress;
   String locationName;
 
   Future<void> enableLocationServices() async {
-    final location = Location();
-    if (await Geolocator.isLocationServiceEnabled() == false) {
-      await location.requestService();
+    if (await Location().serviceEnabled() == false) {
+      await Location().requestService();
     }
   }
 
   Future<void> askForLocationPermission() async {
-    if (await Geolocator.checkPermission() != LocationPermission.always) {
-      await Geolocator.requestPermission();
+    if (await gl.Geolocator.checkPermission() != gl.LocationPermission.always) {
+      await Permission.location.request();
+      await Permission.locationAlways.request();
     }
   }
 
-  Future<void> _listenToStream(Position location) async {
+  Future<void> _listenToStream(LocationData location) async {
     this.location = location;
     final locationDetails = await PlaceQuery.queryPlaceDetails(
       location.latitude,
@@ -33,24 +34,28 @@ class LocationProvider with ChangeNotifier {
     );
     this.locationAddress = locationDetails['formatted_address'];
     this.locationName = locationDetails['name'];
-    // print('Address: ${this.locationAddress} - Name: ${this.locationName}\n');
+    print('Address: $locationAddress - Name: $locationName\n');
     notifyListeners();
   }
 
   void setUpLocationStream() {
     if (TimeOfDay.now().hour >= 7 && TimeOfDay.now().hour < 20) {
+      final location = Location();
+      location.changeSettings(
+        accuracy: LocationAccuracy.high,
+        interval: 0,
+        distanceFilter: 5.0,
+      );
+      location.enableBackgroundMode(enable: true);
+      _locationStream = location.onLocationChanged.listen((location) async {
+        await _listenToStream(location);
+      });
+
       Timer.periodic(Duration(seconds: 30), (timer) {
         if (TimeOfDay.now().hour >= 20) {
           _locationStream.cancel();
           timer.cancel();
         }
-      });
-      _locationStream = Geolocator.getPositionStream(
-        desiredAccuracy: LocationAccuracy.best,
-        distanceFilter: 5,
-        intervalDuration: Duration(seconds: 0),
-      ).listen((location) async {
-        await _listenToStream(location);
       });
     }
   }
