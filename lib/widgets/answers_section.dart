@@ -4,14 +4,16 @@ import 'package:together_app/models/questionnaire_entry_provider.dart'
     show QuestionType;
 import 'package:together_app/widgets/answer_multiple_choices.dart';
 import 'package:together_app/widgets/answer_open_ended.dart';
+import 'package:together_app/widgets/answer_multiple_path.dart';
+import 'package:together_app/models/answer.dart';
 
 class AnswersSection extends StatefulWidget {
-  final dynamic answers;
   final QuestionType type;
+  final Answer answer;
 
   AnswersSection(
-    this.answers,
     this.type,
+    this.answer,
   );
 
   @override
@@ -19,24 +21,6 @@ class AnswersSection extends StatefulWidget {
 }
 
 class _AnswersSectionState extends State<AnswersSection> {
-  void _selectAnswer(int index) {
-    setState(() {
-      widget.answers[index].isSelected = true;
-      for (int i = 0; i < widget.answers.length; i++) {
-        if (i != index) {
-          widget.answers[i].isSelected = false;
-        }
-      }
-    });
-  }
-
-  void _inputAnswer(String answerText) {
-    if (answerText == null) {
-      return;
-    }
-    widget.answers.answerText = answerText;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -44,13 +28,15 @@ class _AnswersSectionState extends State<AnswersSection> {
         switch (widget.type) {
           case QuestionType.MultipleChoice:
             return AnswerMultipleChoices(
-              widget.answers,
-              _selectAnswer,
+              widget.answer,
             );
           case QuestionType.OpenEnded:
             return AnswerOpenEnded(
-              _inputAnswer,
-              widget.answers,
+              widget.answer,
+            );
+          case QuestionType.MultiplePath:
+            return AnswerMultiplePath(
+              widget.answer,
             );
           default:
             return Center(

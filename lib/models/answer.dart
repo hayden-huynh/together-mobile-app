@@ -1,9 +1,9 @@
-class Answer{
-  String answerText;
-  bool isSelected;
+class Answer {
+  dynamic answerText;
+  dynamic usersAnswer;
 
   Answer({
     this.answerText,
-    this.isSelected = false,
+    this.usersAnswer,
   });
 }

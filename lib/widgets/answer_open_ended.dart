@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:together_app/models/answer.dart';
 
 class AnswerOpenEnded extends StatefulWidget {
-  final Function inputAnswer;
   final Answer answer;
 
   AnswerOpenEnded(
-    this.inputAnswer,
     this.answer,
   );
 
@@ -21,7 +19,7 @@ class _AnswerOpenEndedState extends State<AnswerOpenEnded> {
   @override
   Widget build(BuildContext context) {
 
-    _answerTextController.text = widget.answer.answerText;
+    _answerTextController.text = widget.answer.usersAnswer;
 
     return LayoutBuilder(
       builder: (ctx, constraints) => Container(
@@ -29,7 +27,6 @@ class _AnswerOpenEndedState extends State<AnswerOpenEnded> {
         child: TextField(
           controller: _answerTextController,
           textAlign: TextAlign.center,
-          keyboardType: TextInputType.number,
           decoration: const InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -43,7 +40,10 @@ class _AnswerOpenEndedState extends State<AnswerOpenEnded> {
             fontSize: 20,
           ),
           onSubmitted: (_) {
-            widget.inputAnswer(_answerTextController.text);
+            if (_answerTextController.text == null) {
+              return;
+            }
+            widget.answer.usersAnswer = _answerTextController.text;
           },
         ),
       ),

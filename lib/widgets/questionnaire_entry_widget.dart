@@ -37,8 +37,8 @@ class _QuestionnaireEntryWidgetState extends State<QuestionnaireEntryWidget> {
         QuestionSection(widget.entries[_currentEntryIndex].questionText,
             _currentEntryIndex),
         AnswersSection(
-          widget.entries[_currentEntryIndex].answers,
           widget.entries[_currentEntryIndex].type,
+          widget.entries[_currentEntryIndex].answer,
         ),
         QuestionnaireEntryNavigator(
           _currentEntryIndex,

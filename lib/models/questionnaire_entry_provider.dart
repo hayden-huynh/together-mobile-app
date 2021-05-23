@@ -5,17 +5,18 @@ import 'package:together_app/models/answer.dart';
 enum QuestionType {
   MultipleChoice,
   OpenEnded,
+  MultiplePath,
 }
 
 class QuestionnaireEntry {
   final String questionText;
   final QuestionType type;
-  final dynamic answers;
+  final Answer answer;
 
   QuestionnaireEntry(
     this.questionText,
     this.type,
-    this.answers,
+    this.answer,
   );
 }
 
@@ -24,63 +25,70 @@ class QuestionnaireEntryProvider with ChangeNotifier {
     QuestionnaireEntry(
       'I feel good right now?',
       QuestionType.MultipleChoice,
-      [
-        Answer(answerText: 'Strongly Agree'),
-        Answer(answerText: 'Agree'),
-        Answer(answerText: 'Neither Agree nor Disagree'),
-        Answer(answerText: 'Disagree'),
-        Answer(answerText: 'Strong Disagree'),
-      ],
+      Answer(answerText: [
+        'Strong Disagree',
+        'Disagree',
+        'Neither Agree nor Disagree',
+        'Agree',
+        'Strongly Agree',
+      ]),
     ),
     QuestionnaireEntry(
       'How connected do you feel to other people in general right now?',
       QuestionType.MultipleChoice,
-      [
-        Answer(answerText: 'Prefer Not To Say'),
-        Answer(answerText: 'Very Connected'),
-        Answer(answerText: 'Connected'),
-        Answer(answerText: 'A Little Connected'),
-        Answer(answerText: 'Not At All Connected'),
-      ],
+      Answer(answerText: [
+        'Not At All Connected',
+        'A Little Connected',
+        'Prefer Not To Say',
+        'Connected',
+        'Very Connected',
+      ]),
     ),
     QuestionnaireEntry(
       'Do you feel lonely right now?',
       QuestionType.MultipleChoice,
-      [
-        Answer(answerText: 'Prefer Not To Say'),
-        Answer(answerText: 'Not At All Lonely'),
-        Answer(answerText: 'A Little Lonely'),
-        Answer(answerText: 'Lonely'),
-        Answer(answerText: 'Very lonely'),
-      ],
+      Answer(answerText: [
+        'Very lonely',
+        'Lonely',
+        'Prefer Not To Say',
+        'A Little Lonely',
+        'Not At All Lonely',
+      ]),
     ),
     QuestionnaireEntry(
       'How would you rate your learning capacity right now?',
       QuestionType.MultipleChoice,
-      [
-        Answer(answerText: 'Prefer Not To Say'),
-        Answer(answerText: 'Really Good'),
-        Answer(answerText: 'OK'),
-        Answer(answerText: 'Not Great'),
-        Answer(answerText: 'Poor'),
-      ],
+      Answer(answerText: [
+        'Poor',
+        'Not Great',
+        'Prefer Not To Say',
+        'OK',
+        'Really Good',
+      ]),
     ),
     QuestionnaireEntry(
       'Assuming there are some people nearby, how connected do you feel to those people right now?',
       QuestionType.MultipleChoice,
-      [
-        Answer(answerText: 'N/A'),
-        Answer(answerText: 'Prefer Not To Say'),
-        Answer(answerText: 'Very Connected'),
-        Answer(answerText: 'Connected'),
-        Answer(answerText: 'A Little Connected'),
-        Answer(answerText: 'Not At All Connected'),
-      ],
+      Answer(answerText: [
+        'Not At All Connected',
+        'A Little Connected',
+        'Prefer Not To Say',
+        'N/A',
+        'Connected',
+        'Very Connected',
+      ]),
     ),
     QuestionnaireEntry(
       'Right now, how many people are currently within a 5m radius of you?',
       QuestionType.OpenEnded,
       Answer(),
+    ),
+    QuestionnaireEntry(
+      'Where are you right now?',
+      QuestionType.MultiplePath,
+      Answer(
+        usersAnswer: <int, String>{},
+      ),
     )
   ];
 

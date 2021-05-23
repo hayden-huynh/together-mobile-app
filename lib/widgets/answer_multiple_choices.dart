@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:together_app/models/answer.dart';
 
 class AnswerMultipleChoices extends StatefulWidget {
-  final List<Answer> answers;
-  final Function selectAnswer;
+  final Answer answer;
 
   AnswerMultipleChoices(
-    this.answers,
-    this.selectAnswer,
+    this.answer,
   );
 
   @override
@@ -18,8 +16,10 @@ class AnswerMultipleChoices extends StatefulWidget {
 class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
   @override
   Widget build(BuildContext context) {
-    int index = widget.answers.indexWhere((ans) => ans.isSelected);
-    double _currentSliderValue = index == -1 ? 0 : index * 1.0;
+    List<String> answerText = widget.answer.answerText as List<String>;
+    double _currentSliderValue = widget.answer.usersAnswer == null
+        ? 0
+        : answerText.indexOf(widget.answer.usersAnswer) * 1.0;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -32,11 +32,11 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
-              widget.answers.length,
+              answerText.length,
               (idx) => Container(
                 width: 53,
                 child: Text(
-                  '${widget.answers[idx].answerText}',
+                  '${answerText[idx]}',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -54,8 +54,8 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
             borderRadius: BorderRadius.circular(20),
             gradient: LinearGradient(
               colors: [
-                Colors.green.shade400,
                 Colors.red.shade400,
+                Colors.green.shade400,
               ],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -77,14 +77,14 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
             ),
             child: Slider(
               value: _currentSliderValue,
-              label: widget.answers[_currentSliderValue.toInt()].answerText,
+              label: answerText[_currentSliderValue.toInt()],
               min: 0,
-              max: widget.answers.length.toDouble() - 1,
-              divisions: widget.answers.length - 1,
+              max: answerText.length.toDouble() - 1,
+              divisions: answerText.length - 1,
               onChanged: (newValue) {
                 setState(() {
                   _currentSliderValue = newValue;
-                  widget.selectAnswer(newValue.toInt());
+                  widget.answer.usersAnswer = answerText[newValue.toInt()];
                 });
               },
             ),
