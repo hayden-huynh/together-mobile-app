@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:together_app/models/answer.dart';
+import 'package:together_app/models/dropdown_button_with_id.dart';
 
 class AnswerMultiplePath extends StatefulWidget {
   final Answer answer;
@@ -12,57 +13,67 @@ class AnswerMultiplePath extends StatefulWidget {
 }
 
 class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
-  String _firstVal;
-  String _secondVal;
-  String _thirdVal;
+  int _counter = 0;
+  List<Widget> _dropdownButtonList = [];
+
+  void _callback(int id, String newValue) {
+    widget.answer.usersAnswer[id] = newValue;
+    setState(() {
+      for (int i = _counter; i > id; i--) {
+        _counter--;
+        _dropdownButtonList.removeAt(i);
+        widget.answer.usersAnswer.remove(i);
+      }
+
+      var itemList = widget.answer.answerText[widget.answer.usersAnswer[0]];
+      for (int i = 1; i < _counter + 1; i++) {
+        itemList = itemList[widget.answer.usersAnswer[i]];
+      }
+      if (itemList != null) {
+        _counter++;
+        _dropdownButtonList.add(DropdownButtonWithId(
+          _counter,
+          UniqueKey(),
+          null,
+          itemList.keys.toList(),
+          _callback,
+        ));
+      }
+    });
+  }
 
   @override
   void initState() {
-    _firstVal = widget.answer.usersAnswer[0] ?? 'Choose one';
-    _secondVal = widget.answer.usersAnswer[1] ?? 'Choose one';
-    _thirdVal = widget.answer.usersAnswer[2] ?? 'Choose one';
+    print(widget.answer.usersAnswer);
+    if (widget.answer.usersAnswer.length == 0) {
+      List<String> itemList = widget.answer.answerText.keys.toList();
+      _dropdownButtonList.add(DropdownButtonWithId(
+        _counter,
+        UniqueKey(),
+        null,
+        itemList,
+        _callback,
+      ));
+    } else {
+      var itemList = widget.answer.answerText;
+      for (int i = 0; i < widget.answer.usersAnswer.length; i++) {
+        if (itemList != null) {
+          _dropdownButtonList.add(DropdownButtonWithId(
+            _counter,
+            UniqueKey(),
+            widget.answer.usersAnswer[i],
+            itemList.keys.toList(),
+            _callback,
+          ));
+
+          itemList = itemList[widget.answer.usersAnswer[i]];
+          if (itemList != null) {
+            _counter++;
+          }
+        }
+      }
+    }
     super.initState();
-  }
-
-  void _firstValHandler(String newValue, int idx) {
-    _firstVal = newValue;
-    _secondVal = 'Choose one';
-    widget.answer.usersAnswer.remove(1);
-    _thirdVal = 'Choose one';
-    widget.answer.usersAnswer.remove(2);
-  }
-
-  void _secondValHandler(String newValue, int idx) {
-    _secondVal = newValue;
-    _thirdVal = 'Choose one';
-    widget.answer.usersAnswer.remove(2);
-  }
-
-  void _thirdValHandler(String newValue, int idx) {
-    _thirdVal = newValue;
-  }
-
-  Widget _generateDropdownButton(
-    String val,
-    List<String> itemList,
-    int idx,
-    Function onChangedHandler,
-  ) {
-    return DropdownButton(
-      elevation: 16,
-      icon: Icon(Icons.arrow_drop_down),
-      iconSize: 20,
-      value: val,
-      items: itemList
-          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-          .toList(),
-      onChanged: (newValue) {
-        setState(() {
-          onChangedHandler(newValue, idx);
-          widget.answer.usersAnswer[idx] = newValue;
-        });
-      },
-    );
   }
 
   @override
@@ -70,88 +81,7 @@ class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _generateDropdownButton(
-            _firstVal,
-            [
-              'Choose one',
-              'At university',
-              'At work',
-              'At home',
-              'Other',
-            ],
-            0,
-            _firstValHandler),
-        if (_firstVal == 'At university')
-          _generateDropdownButton(
-              _secondVal,
-              [
-                'Choose one',
-                'In a lecture',
-                'In a tutorial',
-                'In the library',
-                'On campus',
-              ],
-              1,
-              _secondValHandler),
-        if (_firstVal == 'At work')
-          _generateDropdownButton(
-              _secondVal,
-              [
-                'Choose one',
-                'With friends',
-                'With family',
-                'With colleagues',
-                'Alone',
-              ],
-              1,
-              _secondValHandler),
-        if (_firstVal == 'At home')
-          _generateDropdownButton(
-              _secondVal,
-              [
-                'Choose one',
-                'With friends',
-                'With family',
-                'Online Studying',
-                'Alone',
-              ],
-              1,
-              _secondValHandler),
-        if (_firstVal == 'Other')
-          _generateDropdownButton(
-              _secondVal,
-              [
-                'Choose one',
-                'With friends',
-                'With family',
-                'With strangers',
-                'Alone',
-              ],
-              1,
-              _secondValHandler),
-        if (_secondVal == 'In a lecture' || _secondVal == 'In a tutorial')
-          _generateDropdownButton(
-              _thirdVal,
-              [
-                'Choose one',
-                'With peers',
-                'With friends',
-              ],
-              2,
-              _thirdValHandler),
-        if (_secondVal == 'In the library' || _secondVal == 'On campus')
-          _generateDropdownButton(
-              _thirdVal,
-              [
-                'Choose one',
-                'With peers',
-                'With friends',
-                'Alone',
-              ],
-              2,
-              _thirdValHandler)
-      ],
+      children: _dropdownButtonList,
     );
   }
 }

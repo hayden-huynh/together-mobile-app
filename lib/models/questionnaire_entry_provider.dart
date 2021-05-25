@@ -87,6 +87,46 @@ class QuestionnaireEntryProvider with ChangeNotifier {
       'Where are you right now?',
       QuestionType.MultiplePath,
       Answer(
+        answerText: {
+          'At university': {
+            'In a lecture': {
+              'With friends': null,
+              'With peers': null,
+            },
+            'In a tutorial': {
+              'With friends': null,
+              'With peers': null,
+            },
+            'In the library': {
+              'With friends': null,
+              'With peers': null,
+              'Alone': null,
+            },
+            'On campus': {
+              'With friends': null,
+              'With peers': null,
+              'Alone': null,
+            },
+          },
+          'At work': {
+            'With friends': null,
+            'With family': null,
+            'With colleagues': null,
+            'Alone': null,
+          },
+          'At home': {
+            'With friends': null,
+            'With family': null,
+            'Online Studying': null,
+            'Alone': null,
+          },
+          'Other': {
+            'With friends': null,
+            'With family': null,
+            'With strangers': null,
+            'Alone': null,
+          }
+        },
         usersAnswer: <int, String>{},
       ),
     )
