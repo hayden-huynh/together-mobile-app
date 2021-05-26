@@ -15,10 +15,17 @@ class AnswerMultiplePath extends StatefulWidget {
 class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
   int _counter = 0;
   List<Widget> _dropdownButtonList = [];
+  bool addedArrows = false;
 
   void _callback(int id, String newValue) {
     widget.answer.usersAnswer[id] = newValue;
     setState(() {
+      for (int i = 0; i < _dropdownButtonList.length; i++) {
+        if (_dropdownButtonList[i] is Icon) {
+          _dropdownButtonList.removeAt(i);
+        }
+      }
+
       for (int i = _counter; i > id; i--) {
         _counter--;
         _dropdownButtonList.removeAt(i);
@@ -39,12 +46,21 @@ class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
           _callback,
         ));
       }
+
+      for (int i = 1; i <= _counter + 1; i += 2) {
+        _dropdownButtonList.insert(
+          i,
+          Icon(
+            Icons.arrow_downward_rounded,
+            color: Theme.of(context).primaryColor,
+          ),
+        );
+      }
     });
   }
 
   @override
   void initState() {
-    print(widget.answer.usersAnswer);
     if (widget.answer.usersAnswer.length == 0) {
       List<String> itemList = widget.answer.answerText.keys.toList();
       _dropdownButtonList.add(DropdownButtonWithId(
@@ -72,8 +88,34 @@ class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
           }
         }
       }
+      if (itemList != null) {
+        _dropdownButtonList.add(DropdownButtonWithId(
+          _counter,
+          UniqueKey(),
+          null,
+          itemList.keys.toList(),
+          _callback,
+        ));
+      }
     }
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (!addedArrows && widget.answer.usersAnswer.length != 0) {
+      for (int i = 1; i <= _counter + 1; i += 2) {
+        _dropdownButtonList.insert(
+          i,
+          Icon(
+            Icons.arrow_downward_rounded,
+            color: Theme.of(context).primaryColor,
+          ),
+        );
+      }
+      addedArrows = true;
+    }
+    super.didChangeDependencies();
   }
 
   @override

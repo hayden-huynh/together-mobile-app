@@ -18,15 +18,19 @@ class QuestionnaireEntryWidget extends StatefulWidget {
 class _QuestionnaireEntryWidgetState extends State<QuestionnaireEntryWidget> {
   var _currentEntryIndex = 0;
 
-  void goToNextEntry() {
+  void _goToNextEntry() {
     setState(() {
-      _currentEntryIndex++;
+      if (_currentEntryIndex < widget.entries.length - 1) {
+        _currentEntryIndex++;
+      }
     });
   }
 
-  void goToPreviousEntry() {
+  void _goToPreviousEntry() {
     setState(() {
-      _currentEntryIndex--;
+      if (_currentEntryIndex > 0) {
+        _currentEntryIndex--;
+      }
     });
   }
 
@@ -39,11 +43,14 @@ class _QuestionnaireEntryWidgetState extends State<QuestionnaireEntryWidget> {
         AnswersSection(
           widget.entries[_currentEntryIndex].type,
           widget.entries[_currentEntryIndex].answer,
+          _goToNextEntry,
+          _goToPreviousEntry,
+          widget.entries.length,
         ),
         QuestionnaireEntryNavigator(
           _currentEntryIndex,
-          goToPreviousEntry,
-          goToNextEntry,
+          _goToPreviousEntry,
+          _goToNextEntry,
           widget.entries.length,
         ),
       ],

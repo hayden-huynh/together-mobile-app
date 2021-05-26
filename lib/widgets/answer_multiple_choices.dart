@@ -23,6 +23,7 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(

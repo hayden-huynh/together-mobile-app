@@ -6,6 +6,7 @@ import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart' as gl;
 
 import 'package:together_app/utilities/place_query.dart';
+import 'package:together_app/utilities/local_database.dart';
 
 class LocationProvider with ChangeNotifier {
   LocationData location;
@@ -27,6 +28,7 @@ class LocationProvider with ChangeNotifier {
   }
 
   Future<void> _listenToStream(LocationData location) async {
+    final timeStamp = DateTime.now().toString();
     this.location = location;
     final locationDetails = await PlaceQuery.queryPlaceDetails(
       location.latitude,
@@ -34,12 +36,21 @@ class LocationProvider with ChangeNotifier {
     );
     this.locationAddress = locationDetails['formatted_address'];
     this.locationName = locationDetails['name'];
-    print('Address: $locationAddress - Name: $locationName\n');
+
+    LocalDatabase.insert('location', 'location_data', {
+      'timestamp': timeStamp,
+      'latitude': location.latitude,
+      'longitude': location.longitude,
+      'address': locationAddress,
+      'name': locationName
+    }).then((value) async {
+      print(await LocalDatabase.retrieve('location', 'location_data'));
+    });
     notifyListeners();
   }
 
   void setUpLocationStream() {
-    if (TimeOfDay.now().hour >= 7 && TimeOfDay.now().hour < 20) {
+    if (TimeOfDay.now().hour >= 7 && TimeOfDay.now().hour < 24) {
       final location = Location();
       location.changeSettings(
         accuracy: LocationAccuracy.high,
@@ -52,7 +63,7 @@ class LocationProvider with ChangeNotifier {
       });
 
       Timer.periodic(Duration(seconds: 30), (timer) {
-        if (TimeOfDay.now().hour >= 20) {
+        if (TimeOfDay.now().hour >= 24) {
           _locationStream.cancel();
           timer.cancel();
         }
