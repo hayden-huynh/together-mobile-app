@@ -37,20 +37,20 @@ class LocationProvider with ChangeNotifier {
     this.locationAddress = locationDetails['formatted_address'];
     this.locationName = locationDetails['name'];
 
-    LocalDatabase.insert('location', 'location_data', {
-      'timestamp': timeStamp,
-      'latitude': location.latitude,
-      'longitude': location.longitude,
-      'address': locationAddress,
-      'name': locationName
-    }).then((value) async {
-      print(await LocalDatabase.retrieve('location', 'location_data'));
-    });
+    // LocalDatabase.insert('location', 'location_data', {
+    //   'timestamp': timeStamp,
+    //   'latitude': location.latitude,
+    //   'longitude': location.longitude,
+    //   'address': locationAddress,
+    //   'name': locationName
+    // }).then((value) async {
+    //   print(await LocalDatabase.retrieve('location', 'location_data'));
+    // });
     notifyListeners();
   }
 
   void setUpLocationStream() {
-    if (TimeOfDay.now().hour >= 7 && TimeOfDay.now().hour < 24) {
+    if (TimeOfDay.now().hour >= 7 && TimeOfDay.now().hour < 20) {
       final location = Location();
       location.changeSettings(
         accuracy: LocationAccuracy.high,
@@ -63,7 +63,7 @@ class LocationProvider with ChangeNotifier {
       });
 
       Timer.periodic(Duration(seconds: 30), (timer) {
-        if (TimeOfDay.now().hour >= 24) {
+        if (TimeOfDay.now().hour >= 20) {
           _locationStream.cancel();
           timer.cancel();
         }
