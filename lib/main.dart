@@ -12,6 +12,10 @@ import 'package:together_app/screens/questionnaire_entry_screen.dart';
 import 'package:together_app/models/questionnaire_entry_provider.dart';
 import 'package:together_app/screens/introduction_screen.dart';
 import 'package:together_app/models/location_provider.dart';
+import 'package:together_app/screens/splash_screen.dart';
+import 'package:together_app/screens/auth_screen.dart';
+import 'package:together_app/models/auth_provider.dart';
+import 'package:together_app/App.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
@@ -87,41 +91,60 @@ class _MyAppState extends State<MyApp> {
           return MultiProvider(
             providers: [
               ChangeNotifierProvider(
+                create: (ctx) => Auth(),
+              ),
+              ChangeNotifierProvider(
                 create: (ctx) => QuestionnaireEntryProvider(),
               ),
               ChangeNotifierProvider(
                 create: (ctx) => LocationProvider(),
               ),
             ],
-            child: MaterialApp(
-              title: 'Together',
-              theme: ThemeData(
-                appBarTheme: AppBarTheme(
-                  color: Colors.green,
-                  centerTitle: true,
-                ),
-                fontFamily: 'NotoSans',
-                canvasColor: Colors.green[50],
-                primaryColor: Colors.green[400],
-                accentColor: Colors.blue,
-                textTheme: TextTheme(
-                  headline5: TextStyle(
-                    fontSize: 27,
+            child: Consumer<Auth>(
+              builder: (ctx, auth, _) => MaterialApp(
+                navigatorKey: App.materialKey,
+                title: 'Together',
+                theme: ThemeData(
+                  appBarTheme: AppBarTheme(
+                    color: Colors.green,
+                    centerTitle: true,
+                  ),
+                  fontFamily: 'NotoSans',
+                  canvasColor: Colors.green[50],
+                  primaryColor: Colors.green[400],
+                  accentColor: Colors.blue,
+                  textTheme: TextTheme(
+                    headline5: TextStyle(
+                      fontSize: 27,
+                    ),
                   ),
                 ),
+                home: auth.isAuthenticated()
+                    ? IntroductionScreen()
+                    : FutureBuilder(
+                        future: auth.autoLogin(),
+                        builder: (context, snapshot) =>
+                            snapshot.connectionState == ConnectionState.waiting
+                                ? SplashScreen()
+                                : AuthScreen(),
+                      ),
+                routes: {
+                  IntroductionScreen.routeName: (ctx) => IntroductionScreen(),
+                  QuestionnaireEntryScreen.routeName: (ctx) =>
+                      QuestionnaireEntryScreen(),
+                },
+                debugShowCheckedModeBanner: false,
               ),
-              home: IntroductionScreen(),
-              routes: {
-                IntroductionScreen.routeName: (ctx) => IntroductionScreen(),
-                QuestionnaireEntryScreen.routeName: (ctx) =>
-                    QuestionnaireEntryScreen(),
-              },
-              debugShowCheckedModeBanner: false,
             ),
           );
         }
-        return Center(
-          child: CircularProgressIndicator(),
+        return MaterialApp(
+          title: 'Together',
+          theme: ThemeData(
+            canvasColor: Colors.green[50],
+          ),
+          home: SplashScreen(),
+          debugShowCheckedModeBanner: false,
         );
       },
     );

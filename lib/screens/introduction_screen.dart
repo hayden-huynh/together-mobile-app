@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 
 import 'package:together_app/screens/questionnaire_entry_screen.dart';
 import 'package:together_app/utilities/location_request_alert.dart';
+import 'package:together_app/widgets/app_drawer.dart';
+import 'package:together_app/models/auth_provider.dart';
 
 FlutterLocalNotificationsPlugin localNotiPlugin =
     FlutterLocalNotificationsPlugin();
@@ -15,7 +17,8 @@ class IntroductionScreen extends StatefulWidget {
   _IntroductionScreenState createState() => _IntroductionScreenState();
 }
 
-class _IntroductionScreenState extends State<IntroductionScreen> {
+class _IntroductionScreenState extends State<IntroductionScreen>
+    with WidgetsBindingObserver {
   bool _locationFunctionAlreadySetUp = false;
 
   Future<void> _showNotification() async {
@@ -65,6 +68,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
           ),
         ),
       ),
+      drawer: AppDrawer(),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
