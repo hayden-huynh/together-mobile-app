@@ -8,14 +8,15 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
+import 'package:together_app/App.dart';
 import 'package:together_app/screens/questionnaire_entry_screen.dart';
-import 'package:together_app/models/questionnaire_entry_provider.dart';
 import 'package:together_app/screens/introduction_screen.dart';
-import 'package:together_app/models/location_provider.dart';
 import 'package:together_app/screens/splash_screen.dart';
 import 'package:together_app/screens/auth_screen.dart';
+import 'package:together_app/screens/submission_screen.dart';
+import 'package:together_app/models/questionnaire_entry_provider.dart';
+import 'package:together_app/models/location_provider.dart';
 import 'package:together_app/models/auth_provider.dart';
-import 'package:together_app/App.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
@@ -132,6 +133,7 @@ class _MyAppState extends State<MyApp> {
                   IntroductionScreen.routeName: (ctx) => IntroductionScreen(),
                   QuestionnaireEntryScreen.routeName: (ctx) =>
                       QuestionnaireEntryScreen(),
+                  SubmissionScreen.routeName: (ctx) => SubmissionScreen(),
                 },
                 debugShowCheckedModeBanner: false,
               ),

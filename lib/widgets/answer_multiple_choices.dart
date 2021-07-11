@@ -17,9 +17,13 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
   @override
   Widget build(BuildContext context) {
     List<String> answerText = widget.answer.answerText as List<String>;
-    double _currentSliderValue = widget.answer.usersAnswer == null
-        ? 0
-        : answerText.indexOf(widget.answer.usersAnswer) * 1.0;
+    double _currentSliderValue;
+    if (widget.answer.usersAnswer == null) {
+      _currentSliderValue = 0;
+      widget.answer.usersAnswer = answerText[0];
+    } else {
+      _currentSliderValue = answerText.indexOf(widget.answer.usersAnswer) * 1.0;
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

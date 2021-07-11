@@ -2,8 +2,10 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class LocalDatabase {
-  static Future<Database> localDatabase(String dbName,
-      [String tableName]) async {
+  static Future<Database> localDatabase(
+    String dbName, [
+    String tableName,
+  ]) async {
     final databasePath = await getDatabasesPath();
     return openDatabase(
       join(databasePath, dbName),
@@ -16,17 +18,29 @@ class LocalDatabase {
   }
 
   static Future<void> insert(
-      String dbName, String tableName, Map<String, Object> data) async {
-    final localDatabase = await LocalDatabase.localDatabase(dbName, tableName);
-    localDatabase.insert(
+    String dbName,
+    String tableName,
+    Map<String, Object> data,
+  ) async {
+    final db = await LocalDatabase.localDatabase(dbName, tableName);
+    db.insert(
       tableName,
       data,
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  static Future<List<Map<String, dynamic>>> retrieve(String dbName, String tableName) async {
+  static Future<List<Map<String, dynamic>>> retrieve(
+    String dbName,
+    String tableName,
+  ) async {
     final db = await LocalDatabase.localDatabase(dbName, tableName);
-    return db.query(tableName);
+    final result = db.query(tableName);
+    return result;
+  }
+
+  static Future<void> clear(String dbName, String tableName) async {
+    final db = await LocalDatabase.localDatabase(dbName, tableName);
+    await db.delete(tableName);
   }
 }

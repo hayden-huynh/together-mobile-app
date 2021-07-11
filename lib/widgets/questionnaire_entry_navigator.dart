@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:together_app/screens/submission_screen.dart';
+
 class QuestionnaireEntryNavigator extends StatelessWidget {
   final int currentEntryIndex;
   final Function goToPreviousEntry;
@@ -33,7 +35,32 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
               style: TextStyle(fontSize: 23),
             ),
           ),
-        if (currentEntryIndex != entryNum - 1)
+        if (currentEntryIndex == entryNum - 1)
+          TextButton.icon(
+            style: ButtonStyle(
+              overlayColor: MaterialStateColor.resolveWith(
+                  (states) => Colors.transparent),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                SubmissionScreen.routeName,
+              );
+            },
+            icon: const Text(
+              'Submit',
+              style: TextStyle(
+                fontSize: 23,
+                fontWeight: FontWeight.bold,
+                color: Colors.green,
+              ),
+            ),
+            label: const Icon(
+              Icons.arrow_forward_ios_outlined,
+              color: Colors.green,
+            ),
+          )
+        else
           TextButton.icon(
             style: ButtonStyle(
               overlayColor: MaterialStateColor.resolveWith(

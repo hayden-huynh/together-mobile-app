@@ -150,4 +150,12 @@ class Auth with ChangeNotifier {
     }
     return false;
   }
+
+  String get userId {
+    return _userId;
+  }
+
+  String get token {
+    return _token;
+  }
 }

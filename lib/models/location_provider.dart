@@ -37,13 +37,14 @@ class LocationProvider with ChangeNotifier {
     this.locationAddress = locationDetails['formatted_address'];
     this.locationName = locationDetails['name'];
 
-    // LocalDatabase.insert('location', 'location_data', {
-    //   'timestamp': timeStamp,
-    //   'latitude': location.latitude,
-    //   'longitude': location.longitude,
-    //   'address': locationAddress,
-    //   'name': locationName
-    // }).then((value) async {
+    LocalDatabase.insert('location', 'location_data', {
+      'timestamp': timeStamp,
+      'latitude': location.latitude,
+      'longitude': location.longitude,
+      'address': locationAddress,
+      'name': locationName
+    });
+    // .then((value) async {
     //   print(await LocalDatabase.retrieve('location', 'location_data'));
     // });
     notifyListeners();
