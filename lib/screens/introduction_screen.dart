@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:provider/provider.dart';
 
 import 'package:together_app/screens/questionnaire_entry_screen.dart';
-import 'package:together_app/utilities/location_request_alert.dart';
 import 'package:together_app/widgets/app_drawer.dart';
-import 'package:together_app/models/auth_provider.dart';
-
-FlutterLocalNotificationsPlugin localNotiPlugin =
-    FlutterLocalNotificationsPlugin();
+import 'package:together_app/utilities/location_request_alert.dart';
+import 'package:together_app/utilities/local_notification.dart';
 
 class IntroductionScreen extends StatefulWidget {
   static const routeName = '/introduction-screen';
@@ -21,32 +16,17 @@ class _IntroductionScreenState extends State<IntroductionScreen>
     with WidgetsBindingObserver {
   bool _locationFunctionAlreadySetUp = false;
 
-  Future<void> _showNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-            'your channel id', 'your channel name', 'your channel description',
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: 'ticker');
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await localNotiPlugin.show(
-        0, 'plain title', 'plain body', platformChannelSpecifics,
-        payload: 'item x');
-    // await localNotiPlugin.periodicallyShow(
-    //   0,
-    //   'Title',
-    //   'Hello world, this is Together',
-    //   RepeatInterval.everyMinute,
-    //   platformChannelSpecifics,
-    //   androidAllowWhileIdle: true,
-    // );
-  }
-
   @override
   void didChangeDependencies() async {
     if (!_locationFunctionAlreadySetUp) {
       await showLocationAlert(context);
+
+      int hour = 8;
+      for (int i = 0; i < 7; i++) {
+        await LocalNotification.scheduleNotification(id: i, atHour: hour);
+        hour += 2;
+      }
+
       _locationFunctionAlreadySetUp = true;
     }
     super.didChangeDependencies();
@@ -93,7 +73,6 @@ class _IntroductionScreenState extends State<IntroductionScreen>
                       elevation: 5,
                     ),
                     onPressed: () async {
-                      // await _showNotification();
                       Navigator.of(context).pushReplacementNamed(
                           QuestionnaireEntryScreen.routeName);
                     },

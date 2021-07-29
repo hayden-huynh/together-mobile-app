@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:together_app/models/authentication_exception.dart';
+import 'package:together_app/utilities/local_timezone.dart';
 import 'package:together_app/App.dart';
 
 class Auth with ChangeNotifier {
@@ -22,7 +23,7 @@ class Auth with ChangeNotifier {
   ]) async {
     try {
       // Make POST Request
-      final url = Uri.parse("http://10.0.2.2:3000$endpoint");
+      final url = Uri.parse("https://s4622569-together.uqcloud.net$endpoint");
       final response = await http.post(
         url,
         headers: {
@@ -31,7 +32,7 @@ class Auth with ChangeNotifier {
         body: json.encode({
           "email": email,
           "password": password,
-          "rememberMe": rememberMe
+          "rememberMe": rememberMe,
         }),
       );
 
@@ -57,6 +58,9 @@ class Auth with ChangeNotifier {
       _expiryTime = DateTime.now().add(
         Duration(seconds: responseBody["expiryTime"]),
       );
+      if (endpoint == "/signup") {
+        await registerTimezone(_token);
+      }
       notifyListeners();
 
       // Set up auto logout timer

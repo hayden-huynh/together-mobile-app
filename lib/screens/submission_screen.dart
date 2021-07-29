@@ -8,6 +8,7 @@ import 'package:together_app/models/questionnaire_entry_provider.dart';
 import 'package:together_app/models/auth_provider.dart';
 import 'package:together_app/screens/introduction_screen.dart';
 import 'package:together_app/utilities/local_database.dart';
+import 'package:together_app/utilities/shared_prefs.dart';
 
 class SubmissionScreen extends StatefulWidget {
   static const routeName = "/submission-screen";
@@ -133,7 +134,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
 
                         try {
                           final url =
-                              Uri.parse("http://10.0.2.2:3000/save-response");
+                              Uri.parse("https://s4622569-together.uqcloud.net/save-response");
                           final response = await http.post(
                             url,
                             headers: {
@@ -170,6 +171,8 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             setState(() {
                               _isLoading = false;
                             });
+
+                            SharedPrefs.tickOffFollowUpReminder();
 
                             await _showAlert(
                               json.decode(response.body)["success"],

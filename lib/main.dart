@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:together_app/App.dart';
 import 'package:together_app/screens/questionnaire_entry_screen.dart';
@@ -17,19 +14,25 @@ import 'package:together_app/screens/submission_screen.dart';
 import 'package:together_app/models/questionnaire_entry_provider.dart';
 import 'package:together_app/models/location_provider.dart';
 import 'package:together_app/models/auth_provider.dart';
+import 'package:together_app/utilities/local_notification.dart';
+import 'package:together_app/utilities/shared_prefs.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
-
-Future<void> _setLocalTimeZone() async {
-  tz.initializeTimeZones();
-  final String localZone = await FlutterNativeTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation(localZone));
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  final now = DateTime.now();
+  final sharedPrefs = await SharedPreferences.getInstance();
+  if (sharedPrefs.getBool("Reminder${now.hour}")) {
+    await LocalNotification.showNotification(
+      "Together: Missed Questionnaire",
+      "Don't forget to complete the ${now.hour-1}:00 questionnaire!",
+    );
+  }
+  SharedPrefs.instance.setBool("Reminder${now.hour}", true);
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  _setLocalTimeZone();
+  await LocalNotification.setLocalTimeZone();
+  await SharedPrefs.init();
   runApp(MyApp());
 }
 
@@ -40,45 +43,14 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Future<FirebaseApp> _init = Firebase.initializeApp();
-  bool flutterLocalNotificationsInitialized = false;
+  bool _flutterLocalNotificationsInitialized = false;
 
   @override
   void didChangeDependencies() async {
-    if (!flutterLocalNotificationsInitialized) {
-      FlutterLocalNotificationsPlugin localNotiPlugin =
-          FlutterLocalNotificationsPlugin();
-      const AndroidInitializationSettings androidSettings =
-          AndroidInitializationSettings('mipmap/ic_launcher');
-      final IOSInitializationSettings iOSSettings = IOSInitializationSettings(
-          onDidReceiveLocalNotification:
-              (int id, String title, String body, String payload) async {
-        showDialog(
-          context: context,
-          builder: (_) => CupertinoAlertDialog(
-            title: Text(title),
-            content: Text(body),
-            actions: [
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                child: Text('OK'),
-                onPressed: () async {
-                  Navigator.of(context, rootNavigator: true).pop();
-                  await Navigator.of(context)
-                      .pushReplacementNamed(IntroductionScreen.routeName);
-                },
-              )
-            ],
-          ),
-        );
-      });
-      flutterLocalNotificationsInitialized = true;
-      final InitializationSettings initSettings =
-          InitializationSettings(android: androidSettings, iOS: iOSSettings);
-      await localNotiPlugin.initialize(initSettings,
-          onSelectNotification: (_) async {
-        await Navigator.of(context)
-            .pushReplacementNamed(IntroductionScreen.routeName);
-      });
+    if (!_flutterLocalNotificationsInitialized) {
+      await LocalNotification.initializeLocalNotificationPlugin(context);
+      SharedPrefs.setUpBools();
+      _flutterLocalNotificationsInitialized = true;
     }
     super.didChangeDependencies();
   }
@@ -89,6 +61,13 @@ class _MyAppState extends State<MyApp> {
       future: _init,
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
+          FirebaseMessaging.onBackgroundMessage(
+              _firebaseMessagingBackgroundHandler);
+          FlutterNativeTimezone.getLocalTimezone().then((timezone) {
+            final localTimezone = timezone.replaceFirst(RegExp(r'/'), "-");
+            FirebaseMessaging.instance.subscribeToTopic(localTimezone);
+          });
+
           return MultiProvider(
             providers: [
               ChangeNotifierProvider(

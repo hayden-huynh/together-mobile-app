@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:together_app/models/auth_provider.dart';
 import 'package:together_app/models/authentication_exception.dart';
 
+import 'package:together_app/utilities/local_notification.dart';
+
 enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatelessWidget {
@@ -14,6 +16,14 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    () async {
+      int hour = 8;
+      for (int i = 0; i < 7; i++) {
+        await LocalNotification.scheduleNotification(id: i, atHour: hour);
+        hour += 2;
+      }
+    }();
+
     final _mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
@@ -134,7 +144,7 @@ class _AuthCardState extends State<AuthCard> {
         await Provider.of<Auth>(context, listen: false).login(
           _credentials["email"],
           _credentials["password"],
-          _rememberMe
+          _rememberMe,
         );
       } else {
         // Sign user up
