@@ -17,7 +17,7 @@ class LocalDatabase {
           );
         } else if (dbName == "questionnaire") {
           return db.execute(
-            'CREATE TABLE $tableName(Q0 TEXT, Q1 TEXT, Q2 TEXT, Q3 TEXT, Q4 TEXT, Q5 TEXT, Q6 TEXT, Q7 TEXT)',
+            'CREATE TABLE $tableName(Q0 TEXT, Q1 TEXT, Q2 TEXT, Q3 TEXT, Q4 TEXT, Q5 TEXT, Q6 TEXT, Q7 TEXT, timestamp TEXT PRIMARY KEY)',
           );
         }
       },

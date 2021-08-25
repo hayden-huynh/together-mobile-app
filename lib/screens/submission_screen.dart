@@ -128,9 +128,13 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                           _isLoading = true;
                         });
 
+                        // Timestamp to be saved if there is no Internet connection; otherwise, to be uploaded to the server database immediately
+                        final currentTimestamp = DateTime.now().toString();
+
                         // Check Internet connection here
                         // If no connection, save current response and return to intro
                         if (!(await isConnectedToInternet())) {
+                          // Transform current list of QuestionnaireEntry to a Map<String, String>. Example: {"Q0": "answer1", "Q2", "answer2", ...}
                           final data = Map.fromIterable(
                             questionnaireProvider.entries,
                             key: (e) {
@@ -142,6 +146,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                               return e.answer.usersAnswer.toString();
                             },
                           );
+                          // Add the current timestamp to the map data above
+                          data.addAll({"timestamp": currentTimestamp});
+
                           await LocalDatabase.insert(
                             "questionnaire",
                             "responses",
@@ -170,9 +177,46 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                           "responses",
                         );
 
-                        List<List<Map<String, dynamic>>> responses = [];
+                        /**
+                         * List of all pairs of responses and corresponding timestamps i.e. past
+                         * saved responses plus the currently being-submitted response
+                         * 
+                         * [ // List of all responses
+                         *   { // 1st pair of timestamp and response
+                         *     "timestamp": ...,
+                         *     "entries": [ // 1st response
+                         *       {
+                         *         question:...
+                         *         answer:...
+                         *       },
+                         *       ...
+                         *     ],
+                         *   },
+                         *   { // 2nd pair of timestamp and response
+                         *     "timestamp": ...
+                         *     "entries": [ // 2nd response
+                         *       {
+                         *         question:...
+                         *         answer:...
+                         *       },
+                         *       ...
+                         *     ]
+                         *   }
+                         * ]
+                         */
+                        List<Map<String, dynamic>> allResponses = [];
+
+                        // Add all previously saved responses into the list of all responses
                         prevResponses.forEach((res) {
-                          final listRes = res.entries
+                          // The Map to hold pair of timestamp and response
+                          Map<String, dynamic> responseAndTimestamp = {};
+                          // The list of all Qx & answer pairs + timestamp key & value
+                          final keyValuePairList = res.entries.toList();
+
+                          // Transform the first 8 Qx & answer pairs to list of format:
+                          // [{question:..., answer:...}, {question:..., answer:...}, ...]
+                          final responseAsList = keyValuePairList
+                              .sublist(0, 8)
                               .map((item) => {
                                     "question": questionnaireProvider
                                         .entries[int.parse(item.key[1])]
@@ -180,15 +224,30 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                     "answer": item.value,
                                   })
                               .toList();
-                          responses.add(listRes);
+
+                          // Extract timestamp value and assign into the Map package
+                          responseAndTimestamp["timestamp"] =
+                              keyValuePairList[8].value;
+                          responseAndTimestamp["entries"] = responseAsList;
+
+                          // Add pair of timestamp and response (a list) into the list of all pairs
+                          allResponses.add(responseAndTimestamp);
                         });
-                        final listCurrentRes = questionnaireProvider.entries
+
+                        // Add the current response being submitted to the list of all responses
+                        // entries is just a list of all 8 QuestionnaireEntry
+                        final currentResponseAsList = questionnaireProvider
+                            .entries
                             .map((e) => {
                                   "question": e.questionText,
                                   "answer": e.answer.usersAnswer.toString()
                                 })
                             .toList();
-                        responses.add(listCurrentRes);
+                        allResponses.add({
+                          "timestamp": currentTimestamp,
+                          "entries": currentResponseAsList,
+                        });
+
                         try {
                           final url =
                               Uri.parse("http://10.0.2.2:3000/save-response");
@@ -200,7 +259,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             body: json.encode({
                               "token": authProvider.token,
                               "userId": authProvider.userId,
-                              "responses": responses,
+                              "responses": allResponses,
                               "locations": locationData
                                   .map((loc) => {
                                         "timestamp": loc["timestamp"],
