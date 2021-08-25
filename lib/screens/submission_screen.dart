@@ -249,8 +249,8 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                         });
 
                         try {
-                          final url =
-                              Uri.parse("http://10.0.2.2:3000/save-response");
+                          final url = Uri.parse(
+                              "https://s4622569-together.uqcloud.net/save-response");
                           final response = await http.post(
                             url,
                             headers: {

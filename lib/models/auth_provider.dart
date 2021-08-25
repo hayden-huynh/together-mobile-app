@@ -26,7 +26,7 @@ class Auth with ChangeNotifier {
 
     try {
       // Make POST Request
-      final url = Uri.parse("http://10.0.2.2:3000/login");
+      final url = Uri.parse("https://s4622569-together.uqcloud.net/login");
       final response = await http.post(
         url,
         headers: {
