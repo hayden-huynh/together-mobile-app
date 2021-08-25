@@ -11,7 +11,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Text(
-          "Together",
+          "Check-In",
           style: TextStyle(
             fontFamily: "Pacifico",
             color: Colors.green,
