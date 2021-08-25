@@ -5,14 +5,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart' as gl;
 
-import 'package:together_app/utilities/place_query.dart';
 import 'package:together_app/utilities/local_database.dart';
 
 class LocationProvider with ChangeNotifier {
   LocationData location;
   StreamSubscription<LocationData> _locationStream;
-  String locationAddress;
-  String locationName;
 
   Future<void> enableLocationServices() async {
     if (await Location().serviceEnabled() == false) {
@@ -30,19 +27,11 @@ class LocationProvider with ChangeNotifier {
   Future<void> _listenToStream(LocationData location) async {
     final timeStamp = DateTime.now().toString();
     this.location = location;
-    final locationDetails = await PlaceQuery.queryPlaceDetails(
-      location.latitude,
-      location.longitude,
-    );
-    this.locationAddress = locationDetails['formatted_address'];
-    this.locationName = locationDetails['name'];
 
     LocalDatabase.insert('location', 'location_data', {
       'timestamp': timeStamp,
       'latitude': location.latitude,
       'longitude': location.longitude,
-      'address': locationAddress,
-      'name': locationName
     });
     // .then((value) async {
     //   print(await LocalDatabase.retrieve('location', 'location_data'));

@@ -36,19 +36,32 @@ class _IntroductionScreenState extends State<IntroductionScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Text(
-            'Together',
-            style: TextStyle(
-              fontSize: 32,
-              fontFamily: 'Pacifico',
-              color: Colors.white,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'CHECK-IN',
+              style: TextStyle(
+                fontSize: 32,
+                fontFamily: 'Raleway',
+                color: Colors.white,
+              ),
             ),
-          ),
+            Container(
+              margin: EdgeInsets.only(
+                left: 5,
+                bottom: 2,
+              ),
+              child: Icon(
+                Icons.check_box_rounded,
+                color: Colors.greenAccent[400],
+                size: 35,
+              ),
+            )
+          ],
         ),
       ),
-      drawer: AppDrawer(),
+      // drawer: AppDrawer(),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

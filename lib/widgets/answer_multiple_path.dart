@@ -47,12 +47,13 @@ class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
         ));
       }
 
-      for (int i = 1; i <= _counter + 1; i += 2) {
+      for (int i = 1; i < _counter * 2; i += 2) {
         _dropdownButtonList.insert(
           i,
           Icon(
             Icons.arrow_downward_rounded,
             color: Theme.of(context).primaryColor,
+            key: UniqueKey(),
           ),
         );
       }
@@ -104,12 +105,13 @@ class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
   @override
   void didChangeDependencies() {
     if (!addedArrows && widget.answer.usersAnswer.length != 0) {
-      for (int i = 1; i <= _counter + 1; i += 2) {
+      for (int i = 1; i <= _counter * 2; i += 2) {
         _dropdownButtonList.insert(
           i,
           Icon(
             Icons.arrow_downward_rounded,
             color: Theme.of(context).primaryColor,
+            key: UniqueKey(),
           ),
         );
       }

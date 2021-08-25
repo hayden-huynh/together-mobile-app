@@ -1,5 +1,5 @@
 class AuthenticationException implements Exception {
-  final List<String> message;
+  final String message;
 
   AuthenticationException(this.message);
 }

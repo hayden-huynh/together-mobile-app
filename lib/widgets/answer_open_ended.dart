@@ -18,8 +18,10 @@ class _AnswerOpenEndedState extends State<AnswerOpenEnded> {
 
   @override
   Widget build(BuildContext context) {
-
     _answerTextController.text = widget.answer.usersAnswer;
+    _answerTextController.selection = TextSelection.fromPosition(
+      TextPosition(offset: _answerTextController.text.length),
+    );
 
     return LayoutBuilder(
       builder: (ctx, constraints) => Container(
@@ -37,8 +39,9 @@ class _AnswerOpenEndedState extends State<AnswerOpenEnded> {
             border: const OutlineInputBorder(),
           ),
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 25,
           ),
+          keyboardType: TextInputType.number,
           onSubmitted: (_) {
             if (_answerTextController.text == null) {
               return;

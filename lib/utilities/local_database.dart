@@ -11,8 +11,15 @@ class LocalDatabase {
       join(databasePath, dbName),
       version: 1,
       onCreate: (db, version) {
-        return db.execute(
-            'CREATE TABLE $tableName(timestamp TEXT PRIMARY KEY, latitude REAL, longitude REAL, address TEXT, name TEXT)');
+        if (dbName == "location") {
+          return db.execute(
+            'CREATE TABLE $tableName(timestamp TEXT PRIMARY KEY, latitude REAL, longitude REAL)',
+          );
+        } else if (dbName == "questionnaire") {
+          return db.execute(
+            'CREATE TABLE $tableName(Q0 TEXT, Q1 TEXT, Q2 TEXT, Q3 TEXT, Q4 TEXT, Q5 TEXT, Q6 TEXT, Q7 TEXT)',
+          );
+        }
       },
     );
   }

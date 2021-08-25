@@ -57,23 +57,25 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
           margin: EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              colors: [
-                Colors.red.shade400,
-                Colors.green.shade400,
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
+            // gradient: LinearGradient(
+            //   colors: [
+            //     Colors.red.shade400,
+            //     Colors.green.shade400,
+            //   ],
+            //   begin: Alignment.centerLeft,
+            //   end: Alignment.centerRight,
+            // ),
           ),
           child: SliderTheme(
             data: SliderThemeData(
+              trackHeight: 8,
+              thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12),
               thumbColor: Theme.of(context).accentColor,
-              activeTrackColor: Theme.of(context).accentColor.withOpacity(0.24),
+              activeTrackColor: Colors.black.withOpacity(0.6),
               inactiveTrackColor:
-                  Theme.of(context).accentColor.withOpacity(0.24),
-              activeTickMarkColor: Colors.amber,
-              inactiveTickMarkColor: Colors.amber,
+                  Colors.black.withOpacity(0.6),
+              activeTickMarkColor: Colors.white,
+              inactiveTickMarkColor: Colors.white,
               valueIndicatorColor: Theme.of(context).accentColor,
               valueIndicatorTextStyle: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -82,7 +84,7 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
             ),
             child: Slider(
               value: _currentSliderValue,
-              label: answerText[_currentSliderValue.toInt()],
+              // label: answerText[_currentSliderValue.toInt()],
               min: 0,
               max: answerText.length.toDouble() - 1,
               divisions: answerText.length - 1,

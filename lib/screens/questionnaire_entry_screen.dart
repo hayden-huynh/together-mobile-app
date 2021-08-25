@@ -6,7 +6,6 @@ import 'package:together_app/widgets/question_section.dart';
 import 'package:together_app/widgets/answers_section.dart';
 import 'package:together_app/widgets/questionnaire_entry_navigator.dart';
 import 'package:together_app/widgets/app_drawer.dart';
-import 'package:together_app/models/auth_provider.dart';
 
 class QuestionnaireEntryScreen extends StatefulWidget {
   static const routeName = '/questionnaire-entry-screen';
@@ -30,7 +29,6 @@ class _QuestionnaireEntryScreenState extends State<QuestionnaireEntryScreen>
         context,
         listen: false,
       ).entries;
-      _entries.shuffle();
       _isInit = false;
     }
     super.didChangeDependencies();
@@ -57,19 +55,35 @@ class _QuestionnaireEntryScreenState extends State<QuestionnaireEntryScreen>
     final _mediaQuery = MediaQuery.of(context);
 
     final _appBar = AppBar(
-      title: Text(
-        'Questionnaire',
-        style: TextStyle(
-          fontSize: 32,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'CHECK-IN',
+            style: TextStyle(
+              fontSize: 32,
+              fontFamily: 'Raleway',
+              color: Colors.white,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(
+              left: 5,
+              bottom: 2,
+            ),
+            child: Icon(
+              Icons.check_box_rounded,
+              color: Colors.greenAccent[400],
+              size: 35,
+            ),
+          )
+        ],
       ),
     );
 
     return Scaffold(
       appBar: _appBar,
-      drawer: AppDrawer(),
+      // drawer: AppDrawer(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(

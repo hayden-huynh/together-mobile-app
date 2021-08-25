@@ -16,10 +16,9 @@ class QuestionSection extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Question ${questionIndex + 1}',
+            'Q: ${questionIndex + 1}/8',
             style: TextStyle(
-              fontSize: Theme.of(context).textTheme.headline5.fontSize,
-              fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
           ),
           Text(

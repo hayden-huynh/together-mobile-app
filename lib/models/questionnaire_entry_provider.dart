@@ -23,88 +23,54 @@ class QuestionnaireEntry {
 class QuestionnaireEntryProvider with ChangeNotifier {
   List<QuestionnaireEntry> _entries = [
     QuestionnaireEntry(
-      'I feel good right now?',
-      QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Strong Disagree',
-        'Disagree',
-        'Neither Agree nor Disagree',
-        'Agree',
-        'Strongly Agree',
-      ]),
-    ),
-    QuestionnaireEntry(
-      'How connected do you feel to other people in general right now?',
-      QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Not At All Connected',
-        'A Little Connected',
-        'Prefer Not To Say',
-        'Connected',
-        'Very Connected',
-      ]),
-    ),
-    QuestionnaireEntry(
-      'Do you feel lonely right now?',
-      QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Very lonely',
-        'Lonely',
-        'Prefer Not To Say',
-        'A Little Lonely',
-        'Not At All Lonely',
-      ]),
-    ),
-    QuestionnaireEntry(
-      'How would you rate your learning capacity right now?',
-      QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Poor',
-        'Not Great',
-        'Prefer Not To Say',
-        'OK',
-        'Really Good',
-      ]),
-    ),
-    QuestionnaireEntry(
-      'Assuming there are some people nearby, how connected do you feel to those people right now?',
-      QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Not At All Connected',
-        'A Little Connected',
-        'Prefer Not To Say',
-        'N/A',
-        'Connected',
-        'Very Connected',
-      ]),
-    ),
-    QuestionnaireEntry(
-      'Right now, how many people are currently within a 5m radius of you?',
-      QuestionType.OpenEnded,
-      Answer(),
-    ),
-    QuestionnaireEntry(
       'Where are you right now?',
       QuestionType.MultiplePath,
       Answer(
         answerText: {
           'At university': {
-            'In a lecture': {
-              'With friends': null,
-              'With peers': null,
+            'Studying': {
+              "Face-to-face": {
+                "A lecture": {
+                  "With friends": null,
+                  "With strangers": null,
+                },
+                "A tutorial": {
+                  "With friends": null,
+                  "With strangers": null,
+                },
+                "Library": {
+                  "With friends": null,
+                  "With strangers": null,
+                  "Alone": null
+                }
+              },
+              "Online": {
+                "A lecture": {
+                  "With friends": null,
+                  "With strangers": null,
+                  "Alone": null,
+                },
+                "A tutorial": {
+                  "With friends": null,
+                  "With strangers": null,
+                  "Alone": null,
+                },
+                "Other self-directed study": {
+                  "With friends": null,
+                  "With strangers": null,
+                  "Alone": null,
+                },
+              }
             },
-            'In a tutorial': {
+            'Socialising': null,
+            'Relaxing': {
               'With friends': null,
-              'With peers': null,
-            },
-            'In the library': {
-              'With friends': null,
-              'With peers': null,
+              'With strangers': null,
               'Alone': null,
             },
-            'On campus': {
+            'Exercising': {
               'With friends': null,
-              'With peers': null,
+              'With strangers': null,
               'Alone': null,
             },
           },
@@ -117,8 +83,33 @@ class QuestionnaireEntryProvider with ChangeNotifier {
           'At home': {
             'With friends': null,
             'With family': null,
-            'Online Studying': null,
             'Alone': null,
+          },
+          "Out and about": {
+            "Travelling": {
+              "With friends": null,
+              "With strangers": null,
+              "Alone": null,
+            },
+            "Eating": {
+              "With friends": null,
+              "With strangers": null,
+              "Alone": null,
+            },
+            "Exercising": {
+              "With friends": null,
+              "With strangers": null,
+              "Alone": null,
+            },
+            "Relaxing": {
+              "With friends": null,
+              "With strangers": null,
+              "Alone": null,
+            },
+            "Socialising": {
+              "With friends": null,
+              "With family": null,
+            }
           },
           'Other': {
             'With friends': null,
@@ -129,7 +120,78 @@ class QuestionnaireEntryProvider with ChangeNotifier {
         },
         usersAnswer: <int, String>{},
       ),
-    )
+    ),
+    QuestionnaireEntry(
+      'How many people are with you right now?',
+      QuestionType.OpenEnded,
+      Answer(),
+    ),
+    QuestionnaireEntry(
+      'How would you rate your sense of connection to the people around you right now?',
+      QuestionType.MultipleChoice,
+      Answer(answerText: [
+        'Terrible',
+        'Not Good',
+        'Average',
+        'Good',
+        'Amazing',
+      ]),
+    ),
+    QuestionnaireEntry(
+      'How would you rate your physical health right now?',
+      QuestionType.MultipleChoice,
+      Answer(answerText: [
+        'Terrible',
+        'Not Good',
+        'Average',
+        'Good',
+        'Amazing',
+      ]),
+    ),
+    QuestionnaireEntry(
+      'How would you rate your mental health right now?',
+      QuestionType.MultipleChoice,
+      Answer(answerText: [
+        'Terrible',
+        'Not Good',
+        'Average',
+        'Good',
+        'Amazing',
+      ]),
+    ),
+    QuestionnaireEntry(
+      'How would you rate your learning capacity right now?',
+      QuestionType.MultipleChoice,
+      Answer(answerText: [
+        'Terrible',
+        'Not Good',
+        'Average',
+        'Good',
+        'Amazing',
+      ]),
+    ),
+    QuestionnaireEntry(
+      'How would you rate your sense of identification with The University of Queensland right now?',
+      QuestionType.MultipleChoice,
+      Answer(answerText: [
+        'Terrible',
+        'Not Good',
+        'Average',
+        'Good',
+        'Amazing',
+      ]),
+    ),
+    QuestionnaireEntry(
+      'How would you rate your feeling on being in control right now?',
+      QuestionType.MultipleChoice,
+      Answer(answerText: [
+        'Terrible',
+        'Not Good',
+        'Average',
+        'Good',
+        'Amazing',
+      ]),
+    ),
   ];
 
   List<QuestionnaireEntry> get entries {

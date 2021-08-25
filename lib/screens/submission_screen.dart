@@ -9,6 +9,7 @@ import 'package:together_app/models/auth_provider.dart';
 import 'package:together_app/screens/introduction_screen.dart';
 import 'package:together_app/utilities/local_database.dart';
 import 'package:together_app/utilities/shared_prefs.dart';
+import 'package:together_app/utilities/check_internet_connection.dart';
 
 class SubmissionScreen extends StatefulWidget {
   static const routeName = "/submission-screen";
@@ -127,14 +128,70 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                           _isLoading = true;
                         });
 
+                        // Check Internet connection here
+                        // If no connection, save current response and return to intro
+                        if (!(await isConnectedToInternet())) {
+                          final data = Map.fromIterable(
+                            questionnaireProvider.entries,
+                            key: (e) {
+                              final i =
+                                  questionnaireProvider.entries.indexOf(e);
+                              return "Q$i";
+                            },
+                            value: (e) {
+                              return e.answer.usersAnswer.toString();
+                            },
+                          );
+                          await LocalDatabase.insert(
+                            "questionnaire",
+                            "responses",
+                            data,
+                          );
+                          await _showAlert(
+                            "No Internet Connection",
+                            Colors.red,
+                            "Your current response will be saved and re-submitted in the next time you take the questionnaire",
+                          );
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            IntroductionScreen.routeName,
+                            (_) => false,
+                          );
+                          return;
+                        }
+
+                        // Retrieve location data stored locally
                         final locationData = await LocalDatabase.retrieve(
                           "location",
                           "location_data",
                         );
+                        // Retrieve unsubmitted responses stored locally
+                        final prevResponses = await LocalDatabase.retrieve(
+                          "questionnaire",
+                          "responses",
+                        );
 
+                        List<List<Map<String, dynamic>>> responses = [];
+                        prevResponses.forEach((res) {
+                          final listRes = res.entries
+                              .map((item) => {
+                                    "question": questionnaireProvider
+                                        .entries[int.parse(item.key[1])]
+                                        .questionText,
+                                    "answer": item.value,
+                                  })
+                              .toList();
+                          responses.add(listRes);
+                        });
+                        final listCurrentRes = questionnaireProvider.entries
+                            .map((e) => {
+                                  "question": e.questionText,
+                                  "answer": e.answer.usersAnswer.toString()
+                                })
+                            .toList();
+                        responses.add(listCurrentRes);
                         try {
                           final url =
-                              Uri.parse("https://s4622569-together.uqcloud.net/save-response");
+                              Uri.parse("http://10.0.2.2:3000/save-response");
                           final response = await http.post(
                             url,
                             headers: {
@@ -143,20 +200,12 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             body: json.encode({
                               "token": authProvider.token,
                               "userId": authProvider.userId,
-                              "entries": questionnaireProvider.entries
-                                  .map((e) => {
-                                        "question": e.questionText,
-                                        "answer":
-                                            e.answer.usersAnswer.toString()
-                                      })
-                                  .toList(),
+                              "responses": responses,
                               "locations": locationData
                                   .map((loc) => {
                                         "timestamp": loc["timestamp"],
                                         "latitude": loc["latitude"],
                                         "longitude": loc["longitude"],
-                                        "address": loc["address"],
-                                        "placeName": loc["name"]
                                       })
                                   .toList()
                             }),
@@ -166,6 +215,10 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             await LocalDatabase.clear(
                               "location",
                               "location_data",
+                            );
+                            await LocalDatabase.clear(
+                              "questionnaire",
+                              "responses",
                             );
 
                             setState(() {
@@ -179,23 +232,27 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                               Colors.green,
                               "Please remember to submit another questionnaire after two hours",
                             );
-                            Navigator.of(context).pushReplacementNamed(
-                                IntroductionScreen.routeName);
                           } else {
                             await _showAlert(
                               "Error",
                               Colors.red,
                               json.decode(response.body)["error"],
                             );
-                            authProvider.logout();
                           }
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            IntroductionScreen.routeName,
+                            (_) => false,
+                          );
                         } catch (err) {
                           await _showAlert(
                             "Something went wrong!",
                             Colors.red,
-                            "Please log in then try again",
+                            "Please try again later.",
                           );
-                          authProvider.logout();
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            IntroductionScreen.routeName,
+                            (_) => false,
+                          );
                         }
                       },
                 child: Text(
