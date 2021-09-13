@@ -22,6 +22,8 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
           ? MainAxisAlignment.end
           : MainAxisAlignment.spaceBetween,
       children: [
+        // If currentEntryIndex is 0 i.e. the first question, do not
+        // render the Previous button on the left
         if (currentEntryIndex != 0)
           TextButton.icon(
             style: ButtonStyle(
@@ -35,6 +37,8 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
               style: TextStyle(fontSize: 23),
             ),
           ),
+        // If currentEntryIndex is the index of the last question,
+        // render a Submit instead of a Next button on the right
         if (currentEntryIndex == entryNum - 1)
           TextButton.icon(
             style: ButtonStyle(
@@ -60,6 +64,8 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
               color: Colors.green,
             ),
           )
+        // Otherwise, if not at the last question, render the Next button
+        // on the right as normal
         else
           TextButton.icon(
             style: ButtonStyle(

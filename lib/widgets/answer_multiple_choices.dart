@@ -29,6 +29,7 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        // The row of different answer options displayed above the slider
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 5.0,
@@ -53,18 +54,13 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
             ),
           ),
         ),
+        // The slider for users to choose between the different options
+        // The answer value chosen is stored into the Answer object passed into this widget,
+        // which belongs to the central list of entries "_entries" in QuestionnaireEntryScreen
         Container(
           margin: EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            // gradient: LinearGradient(
-            //   colors: [
-            //     Colors.red.shade400,
-            //     Colors.green.shade400,
-            //   ],
-            //   begin: Alignment.centerLeft,
-            //   end: Alignment.centerRight,
-            // ),
           ),
           child: SliderTheme(
             data: SliderThemeData(
@@ -72,19 +68,12 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12),
               thumbColor: Theme.of(context).accentColor,
               activeTrackColor: Colors.black.withOpacity(0.6),
-              inactiveTrackColor:
-                  Colors.black.withOpacity(0.6),
+              inactiveTrackColor: Colors.black.withOpacity(0.6),
               activeTickMarkColor: Colors.white,
               inactiveTickMarkColor: Colors.white,
-              valueIndicatorColor: Theme.of(context).accentColor,
-              valueIndicatorTextStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
             ),
             child: Slider(
               value: _currentSliderValue,
-              // label: answerText[_currentSliderValue.toInt()],
               min: 0,
               max: answerText.length.toDouble() - 1,
               divisions: answerText.length - 1,

@@ -19,10 +19,13 @@ class _AnswerOpenEndedState extends State<AnswerOpenEnded> {
   @override
   Widget build(BuildContext context) {
     _answerTextController.text = widget.answer.usersAnswer;
+    // Set the cursor to always start at the right end of the currently available input
     _answerTextController.selection = TextSelection.fromPosition(
       TextPosition(offset: _answerTextController.text.length),
     );
 
+    // Store the user's input into the Answer object passed into this widget,
+    // which belongs to the central list of entries "_entries" in QuestionnaireEntryScreen
     return LayoutBuilder(
       builder: (ctx, constraints) => Container(
         width: constraints.maxWidth * 0.8,

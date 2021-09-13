@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:together_app/screens/questionnaire_entry_screen.dart';
-import 'package:together_app/widgets/app_drawer.dart';
 import 'package:together_app/utilities/location_request_alert.dart';
 import 'package:together_app/utilities/local_notification.dart';
 
@@ -21,6 +20,8 @@ class _IntroductionScreenState extends State<IntroductionScreen>
     if (!_locationFunctionAlreadySetUp) {
       await showLocationAlert(context);
 
+      // Schedule the local notifications at hours 8, 10, 12, 14, 16, 18, 20
+      // whenever the IntroductionScreen is rendered
       int hour = 8;
       for (int i = 0; i < 7; i++) {
         await LocalNotification.scheduleNotification(id: i, atHour: hour);
@@ -52,16 +53,16 @@ class _IntroductionScreenState extends State<IntroductionScreen>
                 left: 5,
                 bottom: 2,
               ),
-              child: Icon(
-                Icons.check_box_rounded,
-                color: Colors.greenAccent[400],
-                size: 35,
+              child: Image.asset(
+                "assets/images/check-in-icon-rounded-corners.png",
+                fit: BoxFit.cover,
+                width: 33,
+                height: 33,
               ),
             )
           ],
         ),
       ),
-      // drawer: AppDrawer(),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

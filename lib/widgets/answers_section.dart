@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 import 'package:together_app/models/questionnaire_entry_provider.dart'
     show QuestionType;
@@ -28,6 +27,7 @@ class AnswersSection extends StatefulWidget {
 }
 
 class _AnswersSectionState extends State<AnswersSection> {
+  /// Build and render the correct answer widget based on the answer type
   Widget _getAnswerWidget() {
     switch (widget.type) {
       case QuestionType.MultipleChoice:
@@ -49,41 +49,14 @@ class _AnswersSectionState extends State<AnswersSection> {
     }
   }
 
-  Widget _checkDeviceOrientation() {
-    if (MediaQuery.of(context).orientation == Orientation.portrait) {
-      return SimpleGestureDetector(
-        onHorizontalSwipe: (direction) {
-          if (direction == SwipeDirection.left) {
-            widget.goToNextQuestion();
-          } else if (direction == SwipeDirection.right) {
-            widget.goToPreviousQuestion();
-          }
-        },
-        swipeConfig: SimpleSwipeConfig(
-          horizontalThreshold: 40,
-          swipeDetectionBehavior: SwipeDetectionBehavior.continuousDistinct,
-        ),
-        child: Container(
-          color: Colors.transparent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _getAnswerWidget(),
-            ],
-          ),
-        ),
-      );
-    } else {
-      return SingleChildScrollView(
-        child: _getAnswerWidget(),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: _checkDeviceOrientation(),
+      child: Center(
+        child: SingleChildScrollView(
+          child: _getAnswerWidget(),
+        ),
+      ),
     );
   }
 }

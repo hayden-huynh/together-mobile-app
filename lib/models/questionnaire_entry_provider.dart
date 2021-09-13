@@ -195,6 +195,6 @@ class QuestionnaireEntryProvider with ChangeNotifier {
   ];
 
   List<QuestionnaireEntry> get entries {
-    return [..._entries];
+    return _entries;
   }
 }
