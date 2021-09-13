@@ -258,9 +258,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             url,
                             headers: {
                               "Content-Type": "application/json",
+                              "Authorization": "Bearer ${authProvider.token}"
                             },
                             body: json.encode({
-                              "token": authProvider.token,
                               "userId": authProvider.userId,
                               "responses": allResponses,
                               "locations": locationData

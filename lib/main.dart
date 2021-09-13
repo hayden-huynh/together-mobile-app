@@ -44,23 +44,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final Future<FirebaseApp> _init = Firebase.initializeApp();
-  bool _flutterLocalNotificationsInitialized = false;
-
-  @override
-  void didChangeDependencies() async {
-    if (!_flutterLocalNotificationsInitialized) {
-      await LocalNotification.initializeLocalNotificationPlugin(context);
-      SharedPrefs.setUpBools();
-      _flutterLocalNotificationsInitialized = true;
-    }
-    super.didChangeDependencies();
+  Future<void> _init(BuildContext context) async {
+    SharedPrefs.setUpBools();
+    await Firebase.initializeApp();
+    await LocalNotification.initializeLocalNotificationPlugin(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _init,
+      future: _init(context),
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           FirebaseMessaging.onBackgroundMessage(
