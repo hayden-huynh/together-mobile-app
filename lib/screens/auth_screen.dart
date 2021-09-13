@@ -12,6 +12,8 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Schedule the local notifications at hours 8, 10, 12, 14, 16, 18, 20
+    // whenever the AuthScreen is rendered
     () async {
       int hour = 8;
       for (int i = 0; i < 7; i++) {
@@ -25,6 +27,7 @@ class AuthScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: <Widget>[
+          // This container is the entire background of the screen
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -38,6 +41,8 @@ class AuthScreen extends StatelessWidget {
               ),
             ),
           ),
+          // Scrollable container that contains a Column of the app title + logo above
+          // and the AuthCard below
           SingleChildScrollView(
             child: Container(
               height: _mediaQuery.size.height -
@@ -48,6 +53,8 @@ class AuthScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
+                  // The app title "Check-In" and the logo arranged
+                  // next to each other on a Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -79,14 +86,16 @@ class AuthScreen extends StatelessWidget {
                           left: 5,
                           bottom: 20,
                         ),
-                        child: Icon(
-                          Icons.check_box_rounded,
-                          color: Colors.greenAccent[700],
-                          size: 45,
+                        child: Image.asset(
+                          "assets/images/check-in-icon-rounded-corners.png",
+                          fit: BoxFit.cover,
+                          width: 40,
+                          height: 40,
                         ),
                       ),
                     ],
                   ),
+                  // The AuthCard widget below the Row of app title + logo
                   AuthCard(),
                 ],
               ),
@@ -98,6 +107,7 @@ class AuthScreen extends StatelessWidget {
   }
 }
 
+/// The AuthCard widget contains the form for users to input their codes and sign in
 class AuthCard extends StatefulWidget {
   @override
   _AuthCardState createState() => _AuthCardState();
@@ -107,8 +117,8 @@ class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   String authenticationCode;
   var _isLoading = false;
-  final _passwordController = TextEditingController();
 
+  /// Show a dialog whenever there is Connection error or Authentication error
   void _showErrorDialog(String title, String message) {
     showDialog(
       context: context,
@@ -133,6 +143,8 @@ class _AuthCardState extends State<AuthCard> {
     );
   }
 
+  /// Validate and save the current authentication code input.
+  /// Then attempt to sign the user in
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       return;
@@ -142,7 +154,8 @@ class _AuthCardState extends State<AuthCard> {
       _isLoading = true;
     });
     try {
-      await Provider.of<Auth>(context, listen: false).login(authenticationCode);
+      await Provider.of<AuthProvider>(context, listen: false)
+          .login(authenticationCode);
     } on ConnectionException catch (err) {
       _showErrorDialog(
         "Connection Error",
@@ -203,7 +216,6 @@ class _AuthCardState extends State<AuthCard> {
                     errorMaxLines: 1,
                   ),
                   obscureText: true,
-                  controller: _passwordController,
                   validator: (value) {
                     if (value.isEmpty) {
                       return "Please provide an Authentication Code";

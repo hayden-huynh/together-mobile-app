@@ -13,9 +13,9 @@ Future<void> registerTimezone(String authToken) async {
       url,
       headers: {
         "Content-Type": "application/json",
+        "Authorization": "Bearer $authToken"
       },
       body: json.encode({
-        "token": authToken,
         "timezone": localTimezone,
         "topic": topic,
       }),

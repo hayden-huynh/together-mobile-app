@@ -19,7 +19,7 @@ class LocalNotification {
   static Future<void> initializeLocalNotificationPlugin(
       BuildContext context) async {
     const AndroidInitializationSettings androidSettings =
-        AndroidInitializationSettings('mipmap/ic_launcher');
+        AndroidInitializationSettings('@drawable/notification_icon');
     final IOSInitializationSettings iOSSettings = IOSInitializationSettings(
       onDidReceiveLocalNotification: (
         int id,
@@ -61,6 +61,7 @@ class LocalNotification {
     );
   }
 
+  /// Immediately show a notification with the given title and body
   static Future<void> showNotification(String title, String body) async {
     await localNotiPlugin.show(
       9,
@@ -86,6 +87,9 @@ class LocalNotification {
     );
   }
 
+  /// Create the TZDateTime object to schedule a notification
+  /// The scheduled time is set to this year, this month, this day, at the hour passed in
+  /// If the hour is already in the past, add 1 day to schedule for the day following
   static TZDateTime _setScheduledTime(int hour) {
     final TZDateTime now = TZDateTime.now(local);
     TZDateTime scheduledTime =
@@ -96,16 +100,17 @@ class LocalNotification {
     return scheduledTime;
   }
 
+  /// Schedule a notification at the hour "atHour" during the day
   static Future<void> scheduleNotification({int id, int atHour}) async {
     await localNotiPlugin.zonedSchedule(
       id,
-      'Together: Questionnaire Time',
+      'Check-in: Questionnaire Time',
       'It is time to take your $atHour:00 questionnaire!',
       _setScheduledTime(atHour),
       const NotificationDetails(
         android: AndroidNotificationDetails(
-          'together-questionnaire',
-          'Together Notifications',
+          'checkin-questionnaire',
+          'Check-in Notifications',
           'Notifications daily, at specific points throughout the day, each with two hours in between',
           importance: Importance.max,
           priority: Priority.max,

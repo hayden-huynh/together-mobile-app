@@ -51,7 +51,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<Auth>(context, listen: false);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final questionnaireProvider = Provider.of<QuestionnaireEntryProvider>(
       context,
       listen: false,
@@ -61,7 +61,10 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
         title: Text(
           "Submission",
           style: TextStyle(
-              fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         automaticallyImplyLeading: false,
       ),
@@ -255,9 +258,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             url,
                             headers: {
                               "Content-Type": "application/json",
+                              "Authorization": "Bearer ${authProvider.token}"
                             },
                             body: json.encode({
-                              "token": authProvider.token,
                               "userId": authProvider.userId,
                               "responses": allResponses,
                               "locations": locationData

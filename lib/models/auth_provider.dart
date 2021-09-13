@@ -4,14 +4,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 import 'package:together_app/models/authentication_exception.dart';
 import 'package:together_app/models/connection_exception.dart';
 import 'package:together_app/utilities/local_timezone.dart';
 import 'package:together_app/utilities/check_internet_connection.dart';
-import 'package:together_app/App.dart';
 
-class Auth with ChangeNotifier {
+class AuthProvider with ChangeNotifier {
   String _token;
   String _userId;
   DateTime _expiryTime;
@@ -27,12 +27,16 @@ class Auth with ChangeNotifier {
     try {
       // Make POST Request
       final url = Uri.parse("https://s4622569-together.uqcloud.net/login");
+      final timezone = await FlutterNativeTimezone.getLocalTimezone();
       final response = await http.post(
         url,
         headers: {
           "Content-Type": "application/json",
         },
-        body: json.encode({"code": authenticationCode}),
+        body: json.encode({
+          "code": authenticationCode,
+          "timezone": timezone,
+        }),
       );
 
       // Extract response data and handle error
@@ -81,16 +85,16 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> logout() async {
-    _token = null;
-    _userId = null;
-    _expiryTime = null;
-    notifyListeners();
-    final sharedPrefs = await SharedPreferences.getInstance();
-    sharedPrefs.remove("loginData");
-    Navigator.of(App.materialKey.currentContext).pop();
-    Navigator.of(App.materialKey.currentContext).pushNamed("/");
-  }
+  // Future<void> logout() async {
+  //   _token = null;
+  //   _userId = null;
+  //   _expiryTime = null;
+  //   notifyListeners();
+  //   final sharedPrefs = await SharedPreferences.getInstance();
+  //   sharedPrefs.remove("loginData");
+  //   Navigator.of(App.materialKey.currentContext).pop();
+  //   Navigator.of(App.materialKey.currentContext).pushNamed("/");
+  // }
 
   bool isAuthenticated() {
     if (_token != null && _expiryTime != null) {
