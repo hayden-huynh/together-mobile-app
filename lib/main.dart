@@ -27,7 +27,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       "Don't forget to complete the ${now.hour}:00 questionnaire!",
     );
   }
-  SharedPrefs.instance.setBool(
+  await sharedPrefs.setBool(
       "Reminder${now.hour}30", true); // Reset to true for next reminder
 }
 
@@ -45,7 +45,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Future<void> _init(BuildContext context) async {
-    SharedPrefs.setUpBools();
+    await SharedPrefs.setUpBools();
     await Firebase.initializeApp();
     await LocalNotification.initializeLocalNotificationPlugin(context);
   }

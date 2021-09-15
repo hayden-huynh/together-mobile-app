@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:152742456264:android:46f07507c0e75aeca3aefd",
+        "android_client_info": {
+          "package_name": "com.haydenhuynh2804.checkin_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152742456264-sanf40bismjdkt3trjsqug5lbankluvg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMRDsChqHfpFqfGGK7Ub4Jl9npafygp04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152742456264-sanf40bismjdkt3trjsqug5lbankluvg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "152742456264-dtla4dp9nc0d0u4972945dp8su3pue73.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.haydenhuynh2804.together-app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:152742456264:android:ebfc2d8b71781d73a3aefd",
         "android_client_info": {
           "package_name": "com.haydenhuynh2804.together_app"
@@ -29,6 +65,13 @@
             {
               "client_id": "152742456264-sanf40bismjdkt3trjsqug5lbankluvg.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "152742456264-dtla4dp9nc0d0u4972945dp8su3pue73.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.haydenhuynh2804.together-app"
+              }
             }
           ]
         }
