@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart' as gl;
+import "package:cron/cron.dart";
 
 import 'package:together_app/utilities/local_database.dart';
 
@@ -46,6 +47,13 @@ class LocationProvider with ChangeNotifier {
   void setUpLocationStream() {
     if (TimeOfDay.now().hour >= 7 && TimeOfDay.now().hour < 20) {
       final location = Location();
+      location.changeNotificationOptions(
+        title: "Check-in Location Service",
+        subtitle: "Check-in background location service is running",
+        iconName: "@drawable/notification_icon",
+        onTapBringToFront: true,
+        color: Colors.green[300],
+      );
       location.changeSettings(
         accuracy: LocationAccuracy.high,
         interval: 0,
@@ -67,11 +75,12 @@ class LocationProvider with ChangeNotifier {
         notifyListeners();
       });
 
-      Timer.periodic(Duration(seconds: 30), (timer) {
-        if (TimeOfDay.now().hour >= 20) {
-          _locationStream.cancel();
-          timer.cancel();
-        }
+      // Schedule the cancellation of location logging as a cron job at 20:00 sharp everyday
+      final cron = Cron();
+      cron.schedule(Schedule.parse("0 20 * * *"), () async {
+        location.enableBackgroundMode(enable: false);
+        _locationStream.cancel();
+        await cron.close();
       });
     }
   }

@@ -146,7 +146,11 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                               return "Q$i";
                             },
                             value: (e) {
-                              return e.answer.usersAnswer.toString();
+                              return e.answer.usersAnswer is Map<int, String>
+                                  ? e.answer.usersAnswer.values
+                                      .toList()
+                                      .join(",")
+                                  : e.answer.usersAnswer.toString();
                             },
                           );
                           // Add the current timestamp to the map data above
@@ -239,13 +243,18 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
 
                         // Add the current response being submitted to the list of all responses
                         // entries is just a list of all 8 QuestionnaireEntry
-                        final currentResponseAsList = questionnaireProvider
-                            .entries
-                            .map((e) => {
-                                  "question": e.questionText,
-                                  "answer": e.answer.usersAnswer.toString()
-                                })
-                            .toList();
+                        final currentResponseAsList =
+                            questionnaireProvider.entries
+                                .map((e) => {
+                                      "question": e.questionText,
+                                      "answer": e.answer.usersAnswer
+                                              is Map<int, String>
+                                          ? e.answer.usersAnswer.values
+                                              .toList()
+                                              .join(",")
+                                          : e.answer.usersAnswer.toString()
+                                    })
+                                .toList();
                         allResponses.add({
                           "timestamp": currentTimestamp,
                           "entries": currentResponseAsList,
@@ -287,7 +296,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                               _isLoading = false;
                             });
 
-                            SharedPrefs.tickOffFollowUpReminder();
+                            await SharedPrefs.tickOffFollowUpReminder();
 
                             await _showAlert(
                               json.decode(response.body)["success"],

@@ -37,6 +37,7 @@ dependencies:
   shared_preferences: ^2.0.6
   simple_gesture_detector: ^0.2.0
   sqflite: ^2.0.0+3
+  cron: ^0.3.2
 
 dev_dependencies:
   flutter_test:
