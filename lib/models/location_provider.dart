@@ -29,21 +29,6 @@ class LocationProvider with ChangeNotifier {
     }
   }
 
-  // Future<void> _listenToStream(LocationData location) async {
-  //   final timeStamp = DateTime.now().toString();
-  //   this.location = location;
-
-  //   LocalDatabase.insert('location', 'location_data', {
-  //     'timestamp': timeStamp,
-  //     'latitude': location.latitude,
-  //     'longitude': location.longitude,
-  //   });
-  //   // .then((value) async {
-  //   //   print(await LocalDatabase.retrieve('location', 'location_data'));
-  //   // });
-  //   notifyListeners();
-  // }
-
   void setUpLocationStream() {
     if (TimeOfDay.now().hour >= 7 && TimeOfDay.now().hour < 20) {
       final location = Location();
@@ -57,7 +42,7 @@ class LocationProvider with ChangeNotifier {
       location.changeSettings(
         accuracy: LocationAccuracy.high,
         interval: 0,
-        distanceFilter: 5.0,
+        distanceFilter: 10.0,
       );
       location.enableBackgroundMode(enable: true);
       _locationStream = location.onLocationChanged.listen((location) async {
@@ -69,9 +54,6 @@ class LocationProvider with ChangeNotifier {
           'latitude': location.latitude,
           'longitude': location.longitude,
         });
-        // .then((value) async {
-        //   print(await LocalDatabase.retrieve('location', 'location_data'));
-        // });
         notifyListeners();
       });
 
