@@ -85,17 +85,6 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> logout() async {
-  //   _token = null;
-  //   _userId = null;
-  //   _expiryTime = null;
-  //   notifyListeners();
-  //   final sharedPrefs = await SharedPreferences.getInstance();
-  //   sharedPrefs.remove("loginData");
-  //   Navigator.of(App.materialKey.currentContext).pop();
-  //   Navigator.of(App.materialKey.currentContext).pushNamed("/");
-  // }
-
   bool isAuthenticated() {
     if (_token != null && _expiryTime != null) {
       if (_expiryTime.isAfter(DateTime.now())) {

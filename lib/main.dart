@@ -21,6 +21,8 @@ import 'package:together_app/utilities/shared_prefs.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   final now = DateTime.now();
   final sharedPrefs = await SharedPreferences.getInstance();
+  await sharedPrefs.reload();
+
   if (sharedPrefs.getBool("Reminder${now.hour}30")) {
     await LocalNotification.showNotification(
       "Check-in: Missed Questionnaire",
