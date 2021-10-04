@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import "package:provider/provider.dart";
+
+import "package:together_app/models/questionnaire_entry_provider.dart";
 
 /// DropdownButtonWithId is a widget basically the same as the normal DropdownButton,
 /// except that DropdownButtonWithId widgets are aware of which one they are in the
@@ -36,9 +39,12 @@ class _DropdownButtonWithIdState extends State<DropdownButtonWithId> {
 
   @override
   Widget build(BuildContext context) {
+    final questionnaireProvider =
+        Provider.of<QuestionnaireEntryProvider>(context, listen: false);
+
     return Container(
       alignment: Alignment.center,
-      width: MediaQuery.of(context).size.width * 0.7,
+      width: MediaQuery.of(context).size.width * 0.75,
       decoration: BoxDecoration(
         border: Border.all(
           color: Theme.of(context).primaryColor,
@@ -47,25 +53,36 @@ class _DropdownButtonWithIdState extends State<DropdownButtonWithId> {
         borderRadius: BorderRadius.circular(10),
       ),
       padding: const EdgeInsets.all(5),
-      child: DropdownButton(
-        hint: Text('Choose one'), // Hint to show when no option is chosen yet
-        elevation: 16,
-        icon: Icon(Icons.arrow_drop_down),
-        iconSize: 25,
-        style: TextStyle(
-          fontSize: 20,
-          color: Colors.black,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: DropdownButton(
+          enableFeedback: true,
+          isExpanded: true,
+          alignment: AlignmentDirectional.center,
+          hint: Center(
+            child: Text(
+              'Choose one',
+            ),
+          ), // Hint to show when no option is chosen yet
+          elevation: 16,
+          icon: Icon(Icons.arrow_drop_down),
+          iconSize: 25,
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
+          value: _val,
+          items: widget.itemList
+              .map((e) =>
+                  DropdownMenuItem(value: e, child: Center(child: Text(e))))
+              .toList(), // Map the list of answer text passed in to a list of DropdownMenuItem
+          onChanged: (newValue) {
+            setState(() {
+              _val = newValue;
+            });
+            widget.callback(widget.id, newValue, questionnaireProvider);
+          },
         ),
-        value: _val,
-        items: widget.itemList
-            .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-            .toList(), // Map the list of answer text passed in to a list of DropdownMenuItem
-        onChanged: (newValue) {
-          setState(() {
-            _val = newValue;
-          });
-          widget.callback(widget.id, newValue);
-        },
       ),
     );
   }

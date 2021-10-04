@@ -35,18 +35,53 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
             color: titleColor,
             fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
         ),
-        content: Text(content),
+        content: Text(
+          content,
+          style: TextStyle(
+            height: 1.5,
+          ),
+          textAlign: TextAlign.justify,
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("OK"),
+            child: Text(
+              "OK",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
           )
         ],
       ),
     );
+  }
+
+  bool _allQuestionsAnswered(
+      List<QuestionnaireEntry> entries, bool multiplePathCompletedAnswer) {
+    bool allQuestionsAnswered = true;
+    for (int i = 1; i < entries.length; i++) {
+      if (entries[i].answer.usersAnswer == null ||
+          entries[i].answer.usersAnswer == "") {
+        allQuestionsAnswered = false;
+        break;
+      }
+    }
+    return allQuestionsAnswered && multiplePathCompletedAnswer;
+  }
+
+  void _resetAnswers(List<QuestionnaireEntry> entries) {
+    entries.forEach((entry) {
+      if (entry.answer.usersAnswer is Map<int, String>) {
+        (entry.answer.usersAnswer as Map<int, String>).clear();
+      } else {
+        entry.answer.usersAnswer = null;
+      }
+    });
   }
 
   @override
@@ -134,6 +169,72 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                         // Timestamp to be saved if there is no Internet connection; otherwise, to be uploaded to the server database immediately
                         final currentTimestamp = DateTime.now().toString();
 
+                        // Check if all questions have been properly answered, and give the user
+                        // the options to go back or submit anyway.
+                        if (!_allQuestionsAnswered(
+                          questionnaireProvider.entries,
+                          questionnaireProvider.multiplePathCompletedAnswer,
+                        )) {
+                          bool goBack;
+                          await showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: Text(
+                                "Unanswered Question(s)",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              content: Text(
+                                "Thank you for participating. We notice, though, that your current data input is incomplete (and this may impact on your payment). If you would like to go back and complete all the questions (and gain maximum payment), please do.  Alternatively, you can click to submit anyway.",
+                                style: TextStyle(
+                                  height: 1.5,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                              actionsAlignment: MainAxisAlignment.spaceEvenly,
+                              actions: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    goBack = true;
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    "Go Back",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.green,
+                                  ),
+                                  onPressed: () {
+                                    goBack = false;
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    "Submit Anyway",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (goBack) {
+                            Navigator.of(context).pop();
+                            return;
+                          }
+                        }
+
                         // Check Internet connection here
                         // If no connection, save current response and return to intro
                         if (!(await isConnectedToInternet())) {
@@ -164,8 +265,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                           await _showAlert(
                             "No Internet Connection",
                             Colors.red,
-                            "Your current response will be saved and re-submitted in the next time you take the questionnaire",
+                            "Your current response will be saved and re-submitted in the next time you take the questionnaire.",
                           );
+                          _resetAnswers(questionnaireProvider.entries);
                           Navigator.of(context).pushNamedAndRemoveUntil(
                             IntroductionScreen.routeName,
                             (_) => false,
@@ -301,7 +403,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             await _showAlert(
                               json.decode(response.body)["success"],
                               Colors.green,
-                              "Please remember to submit another questionnaire after two hours",
+                              "Thank you! You will be notified about your next questionnaire after another two hours.",
                             );
                           } else {
                             await _showAlert(
@@ -310,6 +412,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                               json.decode(response.body)["error"],
                             );
                           }
+                          _resetAnswers(questionnaireProvider.entries);
                           Navigator.of(context).pushNamedAndRemoveUntil(
                             IntroductionScreen.routeName,
                             (_) => false,
@@ -320,6 +423,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             Colors.red,
                             "Please try again later.",
                           );
+                          _resetAnswers(questionnaireProvider.entries);
                           Navigator.of(context).pushNamedAndRemoveUntil(
                             IntroductionScreen.routeName,
                             (_) => false,

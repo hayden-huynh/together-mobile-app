@@ -66,11 +66,16 @@ class _IntroductionScreenState extends State<IntroductionScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    margin: const EdgeInsets.all(20),
+                    margin: const EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Text(
                       'You will be asked a series of questions about what is happening to you right now. We are interested in your ‘raw’ response, so please do not spend too long answering each question.',
-                      style: Theme.of(context).textTheme.headline5,
-                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        height: 1.5,
+                        fontSize:
+                            Theme.of(context).textTheme.headline5.fontSize,
+                      ),
+                      textAlign: TextAlign.justify,
                       softWrap: true,
                     ),
                   ),

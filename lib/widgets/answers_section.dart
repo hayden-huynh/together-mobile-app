@@ -13,6 +13,7 @@ class AnswersSection extends StatefulWidget {
   final Function goToNextQuestion;
   final Function goToPreviousQuestion;
   final int questionCount;
+  final int currentEntryIndex;
 
   AnswersSection(
     this.type,
@@ -20,6 +21,7 @@ class AnswersSection extends StatefulWidget {
     this.goToNextQuestion,
     this.goToPreviousQuestion,
     this.questionCount,
+    this.currentEntryIndex,
   );
 
   @override
@@ -32,6 +34,7 @@ class _AnswersSectionState extends State<AnswersSection> {
     switch (widget.type) {
       case QuestionType.MultipleChoice:
         return AnswerMultipleChoices(
+          Key(widget.currentEntryIndex.toString()),
           widget.answer,
         );
       case QuestionType.OpenEnded:

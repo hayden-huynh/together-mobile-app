@@ -100,6 +100,15 @@ class _MyAppState extends State<MyApp> {
                       fontSize: 27,
                     ),
                   ),
+                  dialogTheme: DialogTheme(
+                    backgroundColor: Colors.green[100],
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                  ),
                 ),
                 home: auth.isAuthenticated()
                     ? IntroductionScreen()

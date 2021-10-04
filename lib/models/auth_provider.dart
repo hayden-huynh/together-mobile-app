@@ -20,7 +20,7 @@ class AuthProvider with ChangeNotifier {
     // Check for Internet connection
     if (!(await isConnectedToInternet())) {
       throw ConnectionException(
-        "An Internet connection is required to perform this action",
+        "An Internet connection is required to perform this action.",
       );
     }
 
@@ -42,7 +42,7 @@ class AuthProvider with ChangeNotifier {
       // Extract response data and handle error
       final responseBody = json.decode(response.body) as Map<String, dynamic>;
       if (responseBody["error"] != null) {
-        throw AuthenticationException(responseBody["error"]);
+        throw AuthenticationException(responseBody["error"] + ".");
       }
       _token = responseBody["token"];
       _userId = responseBody["userId"];

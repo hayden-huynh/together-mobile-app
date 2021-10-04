@@ -26,10 +26,7 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
         // render the Previous button on the left
         if (currentEntryIndex != 0)
           TextButton.icon(
-            style: ButtonStyle(
-              overlayColor: MaterialStateColor.resolveWith(
-                  (states) => Colors.transparent),
-            ),
+            key: UniqueKey(),
             onPressed: goToPreviousEntry,
             icon: const Icon(Icons.arrow_back_ios_outlined),
             label: const Text(
@@ -41,9 +38,11 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
         // render a Submit instead of a Next button on the right
         if (currentEntryIndex == entryNum - 1)
           TextButton.icon(
+            key: UniqueKey(),
             style: ButtonStyle(
               overlayColor: MaterialStateColor.resolveWith(
-                  (states) => Colors.transparent),
+                (states) => Colors.green[200].withOpacity(0.3),
+              ),
             ),
             onPressed: () {
               Navigator.pushNamed(
@@ -68,10 +67,7 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
         // on the right as normal
         else
           TextButton.icon(
-            style: ButtonStyle(
-              overlayColor: MaterialStateColor.resolveWith(
-                  (states) => Colors.transparent),
-            ),
+            key: UniqueKey(),
             onPressed: goToNextEntry,
             icon: const Text(
               'Next',

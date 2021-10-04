@@ -22,38 +22,54 @@ Future<void> showLocationAlert(BuildContext context) async {
           color: Colors.red,
           fontWeight: FontWeight.bold,
         ),
+        textAlign: TextAlign.center,
       ),
-      content: RichText(
-        text: TextSpan(
-          style: TextStyle(
-            color: Theme.of(context).accentColor,
-            fontSize: 18,
+      content: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: RichText(
+          textAlign: TextAlign.justify,
+          text: TextSpan(
+            style: TextStyle(
+              height: 1.5,
+              color: Colors.black,
+              fontSize: 18,
+            ),
+            children: [
+              TextSpan(
+                text:
+                    'For the app to work properly, please ALWAYS keep Location Service ',
+              ),
+              WidgetSpan(child: Icon(Icons.location_on_outlined)),
+              TextSpan(
+                text:
+                    ' on, allow the app to ALWAYS use your location, and keep the app running in the background.',
+              ),
+            ],
           ),
-          children: [
-            TextSpan(
-              text: 'For the app to work properly, please ALWAYS keep Location',
-            ),
-            WidgetSpan(child: Icon(Icons.location_on_outlined)),
-            TextSpan(
-              text:
-                  'Service on, allow the app to ALWAYS use your location, and keep the app running in the background.',
-            ),
-          ],
         ),
       ),
+      actionsAlignment: MainAxisAlignment.center,
       actions: [
-        TextButton(
-          onPressed: () async {
-            Navigator.of(context).pop();
-            await locationProvider.enableLocationServices();
-            await locationProvider.askForLocationPermission();
-            locationProvider.setUpLocationStream();
-          },
-          child: Text(
-            'OK',
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontSize: 18,
+        Align(
+          child: Container(
+            width: 150,
+            child: ElevatedButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await locationProvider.enableLocationServices();
+                await locationProvider.askForLocationPermission();
+                locationProvider.setUpLocationStream();
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+                elevation: 5,
+              ),
+              child: Text(
+                'I agree',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
             ),
           ),
         )
