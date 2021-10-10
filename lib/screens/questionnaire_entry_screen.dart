@@ -103,9 +103,6 @@ class _QuestionnaireEntryScreenState extends State<QuestionnaireEntryScreen>
               AnswersSection(
                 _entries[_currentEntryIndex].type,
                 _entries[_currentEntryIndex].answer,
-                _goToNextEntry,
-                _goToPreviousEntry,
-                _entries.length,
                 _currentEntryIndex,
               ),
               QuestionnaireEntryNavigator(

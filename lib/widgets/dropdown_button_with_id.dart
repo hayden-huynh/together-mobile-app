@@ -47,7 +47,7 @@ class _DropdownButtonWithIdState extends State<DropdownButtonWithId> {
       width: MediaQuery.of(context).size.width * 0.75,
       decoration: BoxDecoration(
         border: Border.all(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).colorScheme.primary,
           width: 3,
         ),
         borderRadius: BorderRadius.circular(10),

@@ -82,7 +82,7 @@ class AnswerMultiplePathState extends State<AnswerMultiplePath> {
           i,
           Icon(
             Icons.arrow_downward_rounded,
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).colorScheme.primary,
             key: UniqueKey(),
           ),
         );
@@ -161,7 +161,7 @@ class AnswerMultiplePathState extends State<AnswerMultiplePath> {
           i,
           Icon(
             Icons.arrow_downward_rounded,
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).colorScheme.primary,
             key: UniqueKey(),
           ),
         );

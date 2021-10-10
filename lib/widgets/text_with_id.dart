@@ -24,7 +24,6 @@ class TextWithId extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.only(bottom: isChoosing ? (_isChosen() ? 10 : 0) : 0),
       height: isChoosing ? (_isChosen() ? 50 : 20) : 30,
       child: Text(
         text,
@@ -32,7 +31,7 @@ class TextWithId extends StatelessWidget {
           fontSize: isChoosing ? (_isChosen() ? 18 : 10) : 12,
           fontWeight: FontWeight.bold,
           color: answerChosen
-              ? (_isChosen() ? Theme.of(context).primaryColor : Colors.black)
+              ? (_isChosen() ? Colors.green[600] : Colors.black)
               : Colors.grey,
         ),
         softWrap: true,

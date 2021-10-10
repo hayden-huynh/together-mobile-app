@@ -47,3 +47,5 @@ app.*.map.json
 
 # Secret API Key
 lib/utilities/key.dart
+
+**/draft.txt

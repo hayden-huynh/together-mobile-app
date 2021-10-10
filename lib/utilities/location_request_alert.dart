@@ -61,7 +61,7 @@ Future<void> showLocationAlert(BuildContext context) async {
                 locationProvider.setUpLocationStream();
               },
               style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
+                primary: Theme.of(context).colorScheme.primary,
                 elevation: 5,
               ),
               child: Text(

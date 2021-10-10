@@ -26,6 +26,14 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
         // render the Previous button on the left
         if (currentEntryIndex != 0)
           TextButton.icon(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateColor.resolveWith(
+                (states) => Theme.of(context).colorScheme.secondary,
+              ),
+              overlayColor: MaterialStateColor.resolveWith(
+                (states) => Colors.blue[200].withOpacity(0.3),
+              ),
+            ),
             key: UniqueKey(),
             onPressed: goToPreviousEntry,
             icon: const Icon(Icons.arrow_back_ios_outlined),
@@ -67,6 +75,14 @@ class QuestionnaireEntryNavigator extends StatelessWidget {
         // on the right as normal
         else
           TextButton.icon(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateColor.resolveWith(
+                (states) => Theme.of(context).colorScheme.secondary,
+              ),
+              overlayColor: MaterialStateColor.resolveWith(
+                (states) => Colors.blue[200].withOpacity(0.3),
+              ),
+            ),
             key: UniqueKey(),
             onPressed: goToNextEntry,
             icon: const Text(

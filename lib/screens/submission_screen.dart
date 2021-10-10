@@ -128,7 +128,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
               right: 8,
             ),
             child: Text(
-              "Are you sure that you want to submit your current questionnaire responses?",
+              "Are you sure that you want to submit your current questionnaire response?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 25,

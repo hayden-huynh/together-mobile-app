@@ -62,7 +62,6 @@ class AuthScreen extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 20.0),
                         padding: EdgeInsets.symmetric(
                           vertical: 8.0,
-                          // horizontal: 94.0,
                         ),
                         child: Text(
                           'CHECK-IN',
@@ -115,7 +114,7 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  String authenticationCode;
+  String _authenticationCode;
   var _isLoading = false;
 
   /// Show a dialog whenever there is Connection error or Authentication error
@@ -167,7 +166,7 @@ class _AuthCardState extends State<AuthCard> {
     });
     try {
       await Provider.of<AuthProvider>(context, listen: false)
-          .login(authenticationCode);
+          .login(_authenticationCode);
     } on ConnectionException catch (err) {
       _showErrorDialog(
         "Connection Error",
@@ -201,9 +200,6 @@ class _AuthCardState extends State<AuthCard> {
       elevation: 8.0,
       child: Container(
         height: 200,
-        // constraints: BoxConstraints(
-        //   minHeight: 190,
-        // ),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -215,7 +211,7 @@ class _AuthCardState extends State<AuthCard> {
                   "Please sign in with the Authentication Code provided to you",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -237,13 +233,10 @@ class _AuthCardState extends State<AuthCard> {
                       return null;
                     },
                     onSaved: (value) {
-                      authenticationCode = value;
+                      _authenticationCode = value;
                     },
                   ),
                 ),
-                // SizedBox(
-                //   height: 20,
-                // ),
                 if (_isLoading)
                   CircularProgressIndicator()
                 else

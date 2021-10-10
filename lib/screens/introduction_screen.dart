@@ -86,7 +86,7 @@ class _IntroductionScreenState extends State<IntroductionScreen>
                         height: 70,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).primaryColor,
+                            primary: Theme.of(context).colorScheme.primary,
                             elevation: 5,
                           ),
                           onPressed: () async {
@@ -113,7 +113,7 @@ class _IntroductionScreenState extends State<IntroductionScreen>
             appBar: _appBar,
             body: Center(
               child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           );

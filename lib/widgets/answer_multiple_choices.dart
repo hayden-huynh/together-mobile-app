@@ -46,14 +46,14 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text.rich(
             TextSpan(children: [
-              TextSpan(text: "Please choose an answer by dragging the"),
+              TextSpan(text: "Please move the"),
               TextSpan(
-                text: "\nblue thumb",
+                text: " slider",
                 style: TextStyle(
                   color: _answerChosen ? Colors.transparent : Colors.blue,
                 ),
               ),
-              TextSpan(text: " to your choice"),
+              TextSpan(text: " to indicate your answer"),
             ]),
             style: TextStyle(
               fontSize: 15,
@@ -111,7 +111,7 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
             data: SliderThemeData(
               trackHeight: 8,
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12),
-              thumbColor: Theme.of(context).accentColor,
+              thumbColor: Theme.of(context).colorScheme.secondary,
               activeTrackColor: _answerChosen
                   ? Colors.black.withOpacity(0.6)
                   : Colors.grey.withOpacity(0.6),

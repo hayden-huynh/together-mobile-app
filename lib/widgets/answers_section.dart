@@ -10,17 +10,11 @@ import 'package:together_app/models/answer.dart';
 class AnswersSection extends StatefulWidget {
   final QuestionType type;
   final Answer answer;
-  final Function goToNextQuestion;
-  final Function goToPreviousQuestion;
-  final int questionCount;
   final int currentEntryIndex;
 
   AnswersSection(
     this.type,
     this.answer,
-    this.goToNextQuestion,
-    this.goToPreviousQuestion,
-    this.questionCount,
     this.currentEntryIndex,
   );
 
