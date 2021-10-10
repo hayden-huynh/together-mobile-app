@@ -17,9 +17,9 @@ class QuestionnaireEntryScreen extends StatefulWidget {
 
 class _QuestionnaireEntryScreenState extends State<QuestionnaireEntryScreen>
     with WidgetsBindingObserver {
-  var _isInit = true;
-  var _entries;
-  var _currentEntryIndex;
+  bool _isInit = true;
+  List<QuestionnaireEntry> _entries;
+  int _currentEntryIndex;
 
   @override
   void didChangeDependencies() {
@@ -103,9 +103,7 @@ class _QuestionnaireEntryScreenState extends State<QuestionnaireEntryScreen>
               AnswersSection(
                 _entries[_currentEntryIndex].type,
                 _entries[_currentEntryIndex].answer,
-                _goToNextEntry,
-                _goToPreviousEntry,
-                _entries.length,
+                _currentEntryIndex,
               ),
               QuestionnaireEntryNavigator(
                 _currentEntryIndex,

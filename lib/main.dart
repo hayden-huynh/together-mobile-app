@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
             ],
             child: Consumer<AuthProvider>(
               builder: (ctx, auth, _) => MaterialApp(
-                title: 'Check-In',
+                title: 'Check-in',
                 theme: ThemeData(
                   appBarTheme: AppBarTheme(
                     color: Colors.green,
@@ -93,11 +93,33 @@ class _MyAppState extends State<MyApp> {
                   ),
                   fontFamily: 'NotoSans',
                   canvasColor: Colors.green[50],
-                  primaryColor: Colors.green[400],
-                  accentColor: Colors.blue,
+                  colorScheme: ColorScheme(
+                    primary: Colors.green[400],
+                    primaryVariant: Colors.green[400],
+                    secondary: Colors.blue,
+                    secondaryVariant: Colors.blue,
+                    surface: Colors.transparent,
+                    background: Colors.transparent,
+                    error: Colors.transparent,
+                    onPrimary: Colors.white,
+                    onSecondary: Colors.white,
+                    onSurface: Colors.transparent,
+                    onBackground: Colors.transparent,
+                    onError: Colors.transparent,
+                    brightness: Brightness.light,
+                  ),
                   textTheme: TextTheme(
                     headline5: TextStyle(
                       fontSize: 27,
+                    ),
+                  ),
+                  dialogTheme: DialogTheme(
+                    backgroundColor: Colors.green[100],
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
                     ),
                   ),
                 ),

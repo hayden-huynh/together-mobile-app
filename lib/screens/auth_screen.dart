@@ -62,7 +62,6 @@ class AuthScreen extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 20.0),
                         padding: EdgeInsets.symmetric(
                           vertical: 8.0,
-                          // horizontal: 94.0,
                         ),
                         child: Text(
                           'CHECK-IN',
@@ -115,7 +114,7 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  String authenticationCode;
+  String _authenticationCode;
   var _isLoading = false;
 
   /// Show a dialog whenever there is Connection error or Authentication error
@@ -129,14 +128,26 @@ class _AuthCardState extends State<AuthCard> {
             color: Colors.red,
             fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
         ),
-        content: Text(message),
+        content: Text(
+          message,
+          style: TextStyle(
+            height: 1.5,
+          ),
+          textAlign: TextAlign.justify,
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("OK"),
+            child: Text(
+              "OK",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
           )
         ],
       ),
@@ -155,7 +166,7 @@ class _AuthCardState extends State<AuthCard> {
     });
     try {
       await Provider.of<AuthProvider>(context, listen: false)
-          .login(authenticationCode);
+          .login(_authenticationCode);
     } on ConnectionException catch (err) {
       _showErrorDialog(
         "Connection Error",
@@ -188,10 +199,7 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: 190,
-        constraints: BoxConstraints(
-          minHeight: 190,
-        ),
+        height: 200,
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -203,31 +211,31 @@ class _AuthCardState extends State<AuthCard> {
                   "Please sign in with the Authentication Code provided to you",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                TextFormField(
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green),
+                Container(
+                  height: 80,
+                  child: TextFormField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green),
+                      ),
+                      errorMaxLines: 1,
                     ),
-                    errorMaxLines: 1,
+                    obscureText: true,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "Please provide an Authentication Code";
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _authenticationCode = value;
+                    },
                   ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return "Please provide an Authentication Code";
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    authenticationCode = value;
-                  },
-                ),
-                SizedBox(
-                  height: 20,
                 ),
                 if (_isLoading)
                   CircularProgressIndicator()

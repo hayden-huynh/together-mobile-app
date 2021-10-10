@@ -124,77 +124,103 @@ class QuestionnaireEntryProvider with ChangeNotifier {
     QuestionnaireEntry(
       'How many people are with you right now?',
       QuestionType.OpenEnded,
-      Answer(),
+      Answer(usersAnswer: null),
     ),
     QuestionnaireEntry(
       'How would you rate your sense of connection to the people around you right now?',
       QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Terrible',
-        'Not Good',
-        'Average',
-        'Good',
-        'Amazing',
-      ]),
+      Answer(
+        answerText: [
+          'Terrible',
+          'Not Good',
+          'Average',
+          'Good',
+          'Amazing',
+        ],
+        usersAnswer: null,
+      ),
     ),
     QuestionnaireEntry(
       'How would you rate your physical health right now?',
       QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Terrible',
-        'Not Good',
-        'Average',
-        'Good',
-        'Amazing',
-      ]),
+      Answer(
+        answerText: [
+          'Terrible',
+          'Not Good',
+          'Average',
+          'Good',
+          'Amazing',
+        ],
+        usersAnswer: null,
+      ),
     ),
     QuestionnaireEntry(
       'How would you rate your mental health right now?',
       QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Terrible',
-        'Not Good',
-        'Average',
-        'Good',
-        'Amazing',
-      ]),
+      Answer(
+        answerText: [
+          'Terrible',
+          'Not Good',
+          'Average',
+          'Good',
+          'Amazing',
+        ],
+        usersAnswer: null,
+      ),
     ),
     QuestionnaireEntry(
       'How would you rate your learning capacity right now?',
       QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Terrible',
-        'Not Good',
-        'Average',
-        'Good',
-        'Amazing',
-      ]),
+      Answer(
+        answerText: [
+          'Terrible',
+          'Not Good',
+          'Average',
+          'Good',
+          'Amazing',
+        ],
+        usersAnswer: null,
+      ),
     ),
     QuestionnaireEntry(
       'How would you rate your sense of identification with The University of Queensland right now?',
       QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Terrible',
-        'Not Good',
-        'Average',
-        'Good',
-        'Amazing',
-      ]),
+      Answer(
+        answerText: [
+          'Terrible',
+          'Not Good',
+          'Average',
+          'Good',
+          'Amazing',
+        ],
+        usersAnswer: null,
+      ),
     ),
     QuestionnaireEntry(
       'How would you rate your feeling on being in control right now?',
       QuestionType.MultipleChoice,
-      Answer(answerText: [
-        'Terrible',
-        'Not Good',
-        'Average',
-        'Good',
-        'Amazing',
-      ]),
+      Answer(
+        answerText: [
+          'Terrible',
+          'Not Good',
+          'Average',
+          'Good',
+          'Amazing',
+        ],
+        usersAnswer: null,
+      ),
     ),
   ];
 
+  bool _multiplePathCompletedAnswer = false;
+
   List<QuestionnaireEntry> get entries {
     return _entries;
+  }
+
+  bool get multiplePathCompletedAnswer => _multiplePathCompletedAnswer;
+
+  set setMultiplePathCompletedAnswer(bool isCompleted) {
+    _multiplePathCompletedAnswer = isCompleted;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:together_app/models/answer.dart';
+import 'package:together_app/models/questionnaire_entry_provider.dart';
 import 'package:together_app/widgets/dropdown_button_with_id.dart';
 
 class AnswerMultiplePath extends StatefulWidget {
@@ -9,19 +10,20 @@ class AnswerMultiplePath extends StatefulWidget {
   AnswerMultiplePath(this.answer);
 
   @override
-  _AnswerMultiplePathState createState() => _AnswerMultiplePathState();
+  AnswerMultiplePathState createState() => AnswerMultiplePathState();
 }
 
-class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
+class AnswerMultiplePathState extends State<AnswerMultiplePath> {
   // _counter is used to track the assignment of ids to dropdown buttons
   // At any point after initialization, _counter always equals the id of the last dropdown button in the list
   // and the integer key of the last answer in answer.usersAnswer
   int _counter = 0;
   List<Widget> _dropdownButtonList = [];
-  bool addedArrows = false;
+  bool _addedArrows = false;
 
   /// _callback is called whenever the user chooses a new option in any of the dropdown buttons
-  void _callback(int id, String newValue) {
+  void _callback(int id, String newValue,
+      QuestionnaireEntryProvider questionnaireProvider) {
     // In the answer.usersAnswer map, set the key same as id to the newValue chosen
     widget.answer.usersAnswer[id] = newValue;
     setState(() {
@@ -33,8 +35,8 @@ class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
       }
 
       // After removing all arrow icons from the list, _counter is now the same as the index of the
-      // last dropdown button in the list. Remove all buttons starting from the last to the one right
-      // below the button with current id because when the option of a button changes, all options
+      // last dropdown button in the list. Remove all buttons starting from the last to and include the one
+      // right below the button with current id because when the option of a button changes, all options
       // below it need to be chosen again
       for (int i = _counter; i > id; i--) {
         _counter--; // Decrement _counter to eventually the same as the id of the current button
@@ -66,6 +68,9 @@ class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
           itemList.keys.toList(),
           _callback,
         ));
+        questionnaireProvider.setMultiplePathCompletedAnswer = false;
+      } else {
+        questionnaireProvider.setMultiplePathCompletedAnswer = true;
       }
 
       // Reinsert all arrow icons. Arrow icons intertwine with dropdown buttons.
@@ -77,7 +82,7 @@ class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
           i,
           Icon(
             Icons.arrow_downward_rounded,
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).colorScheme.primary,
             key: UniqueKey(),
           ),
         );
@@ -150,18 +155,18 @@ class _AnswerMultiplePathState extends State<AnswerMultiplePath> {
     // and not just one, and no arrows have been added yet, insert the arrow icons so that they occupy odd
     // indices 1, 3, 5, etc. The last arrow index cannot exceed the index of the final button in the list
     // where arrows are fully added, which is equal to _counter * 2
-    if (!addedArrows && widget.answer.usersAnswer.length != 0) {
+    if (!_addedArrows && widget.answer.usersAnswer.length != 0) {
       for (int i = 1; i <= _counter * 2; i += 2) {
         _dropdownButtonList.insert(
           i,
           Icon(
             Icons.arrow_downward_rounded,
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).colorScheme.primary,
             key: UniqueKey(),
           ),
         );
       }
-      addedArrows = true;
+      _addedArrows = true;
     }
     super.didChangeDependencies();
   }
