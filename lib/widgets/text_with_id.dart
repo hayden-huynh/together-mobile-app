@@ -24,7 +24,9 @@ class TextWithId extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: isChoosing ? (_isChosen() ? 50 : 20) : 30,
+      alignment: Alignment.topCenter,
+      height: isChoosing ? (_isChosen() ? 60 : 20) : 30,
+      width: isChoosing ? (_isChosen() ? 80 : 48) : 53,
       child: Text(
         text,
         style: TextStyle(
