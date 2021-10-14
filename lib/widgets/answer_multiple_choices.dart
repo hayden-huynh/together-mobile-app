@@ -76,26 +76,16 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
             children: List.generate(
               _answerText.length,
               (idx) => Container(
-                  width: _isChoosing ? 80 : 53,
-                  child: TextWithId(
-                    idx,
-                    _currentSliderValue.toInt(),
-                    '${_answerText[idx]}',
-                    _answerChosen,
-                    _isChoosing,
-                    UniqueKey(),
-                  )
-                  // Text(
-                  //   '${_answerText[idx]}',
-                  //   style: TextStyle(
-                  //     fontSize: 12,
-                  //     fontWeight: FontWeight.bold,
-                  //     color: _answerChosen ? Colors.black : Colors.grey,
-                  //   ),
-                  //   softWrap: true,
-                  //   textAlign: TextAlign.center,
-                  // ),
-                  ),
+                width: _isChoosing ? 80 : 53,
+                child: TextWithId(
+                  idx,
+                  _currentSliderValue.toInt(),
+                  '${_answerText[idx]}',
+                  _answerChosen,
+                  _isChoosing,
+                  UniqueKey(),
+                ),
+              ),
             ),
           ),
         ),
