@@ -75,16 +75,13 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
               _answerText.length,
-              (idx) => Container(
-                width: _isChoosing ? 80 : 53,
-                child: TextWithId(
-                  idx,
-                  _currentSliderValue.toInt(),
-                  '${_answerText[idx]}',
-                  _answerChosen,
-                  _isChoosing,
-                  UniqueKey(),
-                ),
+              (idx) => TextWithId(
+                idx,
+                _currentSliderValue.toInt(),
+                '${_answerText[idx]}',
+                _answerChosen,
+                _isChoosing,
+                UniqueKey(),
               ),
             ),
           ),
