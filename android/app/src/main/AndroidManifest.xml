@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.haydenhuynh2804.checkin_app">
      <application
-        android:label="Check-in"
+        android:label="Check-In"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
