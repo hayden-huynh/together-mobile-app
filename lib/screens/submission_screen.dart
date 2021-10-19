@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:together_app/models/questionnaire_entry_provider.dart';
 import 'package:together_app/models/auth_provider.dart';
 import 'package:together_app/screens/introduction_screen.dart';
+import 'package:together_app/screens/auth_screen.dart';
 import 'package:together_app/utilities/local_database.dart';
 import 'package:together_app/utilities/shared_prefs.dart';
 import 'package:together_app/utilities/check_internet_connection.dart';
@@ -405,19 +407,39 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                               Colors.green,
                               "Thank you! You will be notified about your next questionnaire after another two hours.",
                             );
+
+                            _resetAnswers(questionnaireProvider.entries);
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              IntroductionScreen.routeName,
+                              (_) => false,
+                            );
                           } else {
+                            final errorMessage =
+                                json.decode(response.body)["error"];
                             await _showAlert(
                               "Error",
                               Colors.red,
-                              json.decode(response.body)["error"],
+                              errorMessage,
                             );
+                            _resetAnswers(questionnaireProvider.entries);
+                            if (errorMessage ==
+                                "Please log in then try again") {
+                              final instance =
+                                  await SharedPreferences.getInstance();
+                              await instance.remove("loginData");
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                AuthScreen.routeName,
+                                (_) => false,
+                              );
+                            } else {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                IntroductionScreen.routeName,
+                                (_) => false,
+                              );
+                            }
                           }
-                          _resetAnswers(questionnaireProvider.entries);
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            IntroductionScreen.routeName,
-                            (_) => false,
-                          );
                         } catch (err) {
+                          print(err.toString());
                           await _showAlert(
                             "Something went wrong!",
                             Colors.red,

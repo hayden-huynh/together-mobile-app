@@ -133,6 +133,7 @@ class _MyAppState extends State<MyApp> {
                                 : AuthScreen(),
                       ),
                 routes: {
+                  AuthScreen.routeName: (ctx) => AuthScreen(),
                   IntroductionScreen.routeName: (ctx) => IntroductionScreen(),
                   QuestionnaireEntryScreen.routeName: (ctx) =>
                       QuestionnaireEntryScreen(),
