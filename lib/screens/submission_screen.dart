@@ -209,7 +209,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                   child: Text(
                                     "Go Back",
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 15,
                                     ),
                                   ),
                                 ),
@@ -224,7 +224,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                   child: Text(
                                     "Submit Anyway",
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 15,
                                     ),
                                   ),
                                 ),
