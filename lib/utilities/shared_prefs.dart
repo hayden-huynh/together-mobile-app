@@ -11,6 +11,7 @@ class SharedPrefs {
 
   /// Set up all reminder time key - boolean value pairs
   static Future<void> setUpBools() async {
+    await init();
     if (!instance.containsKey("Reminder830")) {
       await instance.setBool("Reminder830", true);
     }
@@ -37,6 +38,7 @@ class SharedPrefs {
   /// When the user has submitted at a time point, disable the
   /// follow-up reminder notification for that time point
   static Future<void> tickOffFollowUpReminder() async {
+    await init();
     final now = DateTime.now();
     // Only turn off reminder notification if questionnaire is
     // submitted before minute 30 of the seven main time points
